@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Player {
     private final String name;
     private final ArrayList<Card> hand; //cards currently in the players hand
+    private boolean playerTurn;
 
     public Player(String name){
         this.name = name;
@@ -83,5 +84,12 @@ public class Player {
         return false;
     }
 
+    public void setPlayerTurn() {
+        playerTurn = true;
+    }
+
+    public boolean getPlayerTurnStatus(){
+        return playerTurn;
+    }
 
 }

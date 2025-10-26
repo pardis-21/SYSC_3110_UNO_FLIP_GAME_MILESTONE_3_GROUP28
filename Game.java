@@ -28,9 +28,10 @@ public class Game {
                    players.add(playerName);
                 }
             }
+
             GameLogic gameLogic = new GameLogic(players);
 
-            gameLogic.startGame();
+
 
 
         }

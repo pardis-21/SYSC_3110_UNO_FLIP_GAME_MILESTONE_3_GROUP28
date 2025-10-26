@@ -47,8 +47,16 @@ public class GameLogic{
             }
             else {
                 for (Card card : drawPile){
-                    player.getHand().add(card);
-
+                    if (player.getHand().size() == 7){
+                        break;
+                    }
+                    else {
+                        player.getHand().add(card);
+                        for (int i = discardPile.size()-1; i >= 0; i--){
+                            discardPile.add(card);
+                        }
+                        drawPile.remove(card);
+                    }
             }
 
             }
@@ -56,11 +64,31 @@ public class GameLogic{
     }
 
     private void addCardToPlayerHand(){
+        for (Player player : players){
+            player.drawCard();
+        }
 
 
     }
 
+    public void playerTurn(){
+        //checking the players turn status
+        for (Player player : players){
+            if (player.getPlayerTurnStatus() == true){
+                dealCardsBeginning();
 
+            }
+            else {
+
+
+            }
+
+        }
+    }
+
+    public void startGame(){
+
+    }
 
 
 }
