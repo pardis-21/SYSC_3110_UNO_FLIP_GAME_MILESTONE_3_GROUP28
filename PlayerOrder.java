@@ -1,46 +1,62 @@
 import  java.util.*;
 
 public class PlayerOrder {
-    private LinkedList<Player> players;
-    private Player player;
+    private playerNode firstPlayer;
+    private playerNode lastPlayer;
+    private int numPlayers;
 
-    public class playerNode {
-        Player pName;
-        playerNode prev;
-        playerNode next;
+    private class playerNode {
+        private String pName;
+        private playerNode prev;
+        private playerNode next;
 
         public playerNode(Player p) {
-            this.pName = p;
+            this.pName = p.getName();
             this.prev = null;
             this.next = null;
 
         }
     }
-    public class playerDoublyLinkedList {
-        playerNode firstPlayer;
-        playerNode lastPlayer;
 
-        public playerDoublyLinkedList() {
-            this.firstPlayer = null;
-            this.lastPlayer = null;
-        }
+    public PlayerOrder() {
+        this.firstPlayer = null;
+        this.lastPlayer = null;
+        this.numPlayers = 0;
+    }
+    public boolean isEmpty() {
+        return numPlayers == 0;
+    }
 
 
     //adding players to the linkedList
     public void addPlayer(Player p) {
         playerNode tempPlayerNode = new playerNode(p);
 
-        if (players == null || players.size() == 0) {
-            System.out.println("There are no players to add!");
-        }
-        else if (firstPlayer == null){
+        if (firstPlayer == null) {
+
             firstPlayer = tempPlayerNode;
+            firstPlayer.next = tempPlayerNode;
+            firstPlayer.prev = firstPlayer;
+
             lastPlayer = tempPlayerNode;
-        }
-        else {
-          lastPlayer = tempPlayerNode;
-          tempPlayerNode.prev = lastPlayer;
-          lastPlayer.next = tempPlayerNode;
+            lastPlayer.next = tempPlayerNode;
+            lastPlayer.prev = lastPlayer;
+
+        } else if (firstPlayer == lastPlayer) {
+            firstPlayer.next = tempPlayerNode;
+            lastPlayer = tempPlayerNode;
+            lastPlayer.next = firstPlayer;
+            lastPlayer.prev = firstPlayer.next;
+            firstPlayer.prev = lastPlayer.next;
+
+        } else if (firstPlayer != lastPlayer) {
+
+            lastPlayer.next = tempPlayerNode;
+            tempPlayerNode.prev = lastPlayer;
+            lastPlayer = tempPlayerNode;
+            tempPlayerNode.next = firstPlayer;
+            firstPlayer.prev = tempPlayerNode;
+
         }
     }
 
@@ -59,7 +75,6 @@ public class PlayerOrder {
             System.out.println("Its "+ currentPlayer.pName + "'s turn!");
             currentPlayer = currentPlayer.prev;
         }
-    }
 
-}
+    }
 }

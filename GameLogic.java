@@ -21,7 +21,6 @@ public class GameLogic{
 
 
 
-
         discardPile = new LinkedList<>();
 
         flipPile = new ArrayList<>();
