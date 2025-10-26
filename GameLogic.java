@@ -16,6 +16,8 @@ public class GameLogic{
         //creating an arrayList of players
         players = new ArrayList<>();
 
+
+        //adding the elements of the player names to the list of players
         for  (int i = 0; i < playerNames.size(); i++){
             players.add(new Player(playerNames.get(i)));
 
@@ -26,6 +28,7 @@ public class GameLogic{
         discardPile = new ArrayList<>();
         flipPile = new ArrayList<>();
         drawPile = new ArrayList<>();
+
         direction = true; //clockwise direction
         score = 0;
     }
