@@ -117,7 +117,7 @@ public class GameLogic{
                 //if the player wants to draw a card
                 if (choice == 0) {
                     playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
-                    System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn a card.");
+                    System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn the following card: " + drawPile.get(0).getCardColour() + " " + drawPile.get(0).getCardType());
                     drawPile.remove(0);
                     playerTurn();
                     flag = false;
@@ -140,7 +140,6 @@ public class GameLogic{
                         else if (card.getCardType().equals(Card.Type.SKIP)) {
 
                             System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
 
                             //if direction is CW
                             if (direction) {
@@ -153,23 +152,25 @@ public class GameLogic{
                                 playerOrder.nextPlayerCounterClockwise();
                                 System.out.println( playerOrder.getCurrentPlayer().getName() + "'s turn has been skipped\n");
                             }
+                            playerOrder.getCurrentPlayer().getHand().remove(card);
 
                         }
                         else if (card.getCardType().equals(Card.Type.WILD)) {
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
-                            System.out.println("Choose a colour for the wild.");
-                            for (int i = 0; i < 4; i++) {
-                                Card.Colour colour = Card.Colour.values()[i];
-                                System.out.println(i + "." + colour.name());
+                            System.out.println("WIlD card has been played. Enter the colour that will be played next: (RED, GREEN, BLUE, YELLOW)");
+                            userInput.nextLine();
+                            String colour = userInput.nextLine();
+                            flag = true;
+
+                            while (flag) {
+                                if (!colour.equals("RED") && !colour.equals("GREEN") && !colour.equals("BLUE") && !colour.equals("YELLOW")) {
+                                    System.out.println("Invalid colour. Please try again");
+                                } else {
+                                    card.setCardColour(colour);
+                                    flag = false;
+                                }
                             }
-                            int wild = userInput.nextInt();
-                            Card.Colour wildColour = Card.Colour.values()[wild];
-                            card.setCardColour(wildColour);
-
-
                         }
                         else if (card.getCardType().equals(Card.Type.WILD_DRAW2)) {
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
 
                         }
 

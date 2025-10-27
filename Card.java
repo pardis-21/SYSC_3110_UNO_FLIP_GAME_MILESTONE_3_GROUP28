@@ -48,10 +48,9 @@ public class Card {
         return cardColour;
     }
 
-    public void setCardColour(Colour colour){
-        cardColour = colour;
+    public void setCardColour(String colour) {
+        this.cardColour = Card.Colour.valueOf(colour);
     }
-
 
     //checks if this card can be played on top of another
     public boolean playCardOnAnother(Card topCard){
