@@ -134,7 +134,7 @@ public class GameLogic{
 
     public void playGame() {
         System.out.println("These are your cards: ");
-        System.out.println(playerOrder.getCurrentPlayer().getHand());
+        System.out.println(playerOrder.getCurrentPlayer().showHand());
 
 
 
