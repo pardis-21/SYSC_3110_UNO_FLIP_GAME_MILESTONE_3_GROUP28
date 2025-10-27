@@ -1,16 +1,19 @@
 import java.util.ArrayList;
 
 public class PlayerOrder {
-    private playerNode firstPlayer;
-    private playerNode lastPlayer;
-    private int numPlayers;
+
+    private playerNode firstPlayer; //head
+    private playerNode lastPlayer; //tail
+    private int numPlayers; //num of nodes
     private playerNode currentPlayer;
 
+    //creating a node
     private class playerNode {
-        private Player pName;
+        private Player pName; //data
         private playerNode prev;
         private playerNode next;
 
+        //constructor
         public playerNode(Player p) {
             this.pName = p;
             this.prev = null;
@@ -19,6 +22,7 @@ public class PlayerOrder {
         }
     }
 
+    //constructor
     public PlayerOrder() {
         this.firstPlayer = null;
         this.lastPlayer = null;
@@ -45,8 +49,8 @@ public class PlayerOrder {
 
             currentPlayer = firstPlayer;
         }
+        //already a node in CDLL
         else {
-
             lastPlayer.next = tempPlayerNode;
             tempPlayerNode.prev = lastPlayer;
             tempPlayerNode.next = firstPlayer;
@@ -60,15 +64,13 @@ public class PlayerOrder {
     //traversing forward the doubly linked list
     public void nextPlayerClockwise(){
         if (currentPlayer != null) {
-            //System.out.println("It's "+ currentPlayer.pName + "'s turn!");
             currentPlayer = currentPlayer.next;
 
         }
     }
-
+    //traversing backwards the doubly linked list
     public void nextPlayerCounterClockwise(){
         if (currentPlayer != null) {
-            //System.out.println("Its "+ currentPlayer.pName + "'s turn!");
             currentPlayer = currentPlayer.prev;
         }
 

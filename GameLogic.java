@@ -7,7 +7,7 @@ public class GameLogic{
     private ArrayList<Card> cards;
     private LinkedList<Card> discardPile;
     private ArrayList<Card> drawPile;
-    private ArrayList<Card> flipPile;
+    //private ArrayList<Card> flipPile; for future use
     private boolean direction; //clockwise or counterclockwise
     private int score;
     private static final int SEVEN = 7;
@@ -17,6 +17,7 @@ public class GameLogic{
 
         //creating an arrayList of players
 
+        //instance of that class
         playerOrder = new PlayerOrder();
 
         //adding players to doublylinkedlist
@@ -26,18 +27,17 @@ public class GameLogic{
         }
 
 
-
         discardPile = new LinkedList<>();
 
-        flipPile = new ArrayList<>();
+        // for future use flipPile = new ArrayList<>();
 
         //populating the cards with a card to make a deck (108 cards)
         drawPile = new ArrayList<>();
         for (int i = 0; i < 108; i++){
-            drawPile.add( new Card());
+            drawPile.add(new Card());
         }
 
-        //assuming by UNO rules that all players have same age and strating from CW direction
+        //assuming by UNO rules that all players have same age and starting from CW direction
         direction = true; //clockwise direction
         score = 0;
     }
@@ -66,7 +66,7 @@ public class GameLogic{
 
     }
 
-    private Card showTopCard(){
+    private Card getTopCard(){
         return discardPile.get(0);
     }
 
@@ -101,7 +101,7 @@ public class GameLogic{
         //starting round
         dealCardsBeginning();
         System.out.println("");
-        System.out.println("Top Card: " + showTopCard());
+        System.out.println("Top Card: " + getTopCard());
         System.out.println("");
         System.out.println("Player: " + playerOrder.getCurrentPlayer().getName() + "'s turn");
 
@@ -135,6 +135,7 @@ public class GameLogic{
     public void playGame() {
         System.out.println("These are your cards: ");
         System.out.println(playerOrder.getCurrentPlayer().getHand());
+
 
 
     }
