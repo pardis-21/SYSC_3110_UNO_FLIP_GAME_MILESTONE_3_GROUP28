@@ -69,8 +69,6 @@ public class GameLogic{
         }
 
         discardPile.add(0, drawPile.remove(0));
-        discardPile.add(0,drawPile.get(0));
-        drawPile.remove(0);
 
     }
 
@@ -143,12 +141,9 @@ public class GameLogic{
                     if (card.playCardOnAnother(getTopCard())) {
                         if (card.getCardType().equals(Card.Type.REVERSE)) {
                             direction = !direction;
-                            discardPile.add(0, card);
                             playerOrder.getCurrentPlayer().getHand().remove(card);
                             System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
                             System.out.println("Order of game has been reversed\n");
-                            //System.out.println("Player: " + playerOrder.getCurrentPlayer().getName() + "'s turn");
-
 
                         }
                         else if (card.getCardType().equals(Card.Type.SKIP)) {
@@ -185,23 +180,30 @@ public class GameLogic{
                                 } else {
                                     card.setCardColour(colour); // if this expects String
                                     flag = false;
+                                    playerOrder.getCurrentPlayer().getHand().remove(card);
+
                                 }
                             }
                         }
                         else if (card.getCardType().equals(Card.Type.WILD_DRAW2)) {
                             System.out.println("WIlD DRAW2 card has been played. Enter the colour that will be played next: (RED, GREEN, BLUE, YELLOW)");
-                            userInput.nextLine();
-                            String colour = userInput.nextLine();
-                            flag = true;
+                            playerOrder.getCurrentPlayer().getHand().remove(card);
 
+                            if (userInput.hasNextLine()) userInput.nextLine();
+
+                            flag = true;
                             while (flag) {
-                                if (!colour.equals("RED") && !colour.equals("GREEN") && !colour.equals("BLUE") && !colour.equals("YELLOW")) {
-                                    System.out.println("Invalid colour. Please try again");
+                                String colour = userInput.nextLine().trim().toUpperCase();
+
+                                if (!colour.equals("RED") && !colour.equals("GREEN") &&
+                                        !colour.equals("BLUE") && !colour.equals("YELLOW")) {
+                                    System.out.println("Invalid colour. Please try again (RED, GREEN, BLUE, YELLOW):");
                                 } else {
-                                    card.setCardColour(colour);
+                                    card.setCardColour(colour); // if setCardColour takes String
                                     flag = false;
                                 }
                             }
+
 
                             playerTurn();
                             playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
@@ -217,6 +219,8 @@ public class GameLogic{
 
                         else if (card.getCardType().equals(Card.Type.DRAW_ONE)) {
                             System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
+                            playerOrder.getCurrentPlayer().getHand().remove(card);
+
                             playerTurn();
                             playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
                             System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn the following card: " + drawPile.get(0).getCardColour() + " " + drawPile.get(0).getCardType());

@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * This class manages the player order implementation, because there are both SKIP and REVERSE cards
  * a circular doubly linkedlist implementation was used. It keeps track of the current player, the previous
  * player and the next player in the order by either moving clockwise or counterclock, depending on the game.
- * This class also adds players in order and retrives them in order.
+ * This class also adds players in order and retrieves them in order.
  * @Author Pardis Ehsani 101300400
  */
 public class PlayerOrder {
