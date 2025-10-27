@@ -66,7 +66,7 @@ public class GameLogic{
 
     }
 
-    private Card getTopCard(){
+    public Card getTopCard(){
         return discardPile.get(0);
     }
 
@@ -78,7 +78,7 @@ public class GameLogic{
 
     private void addCardToPlayerHand(){
         for (Player player : playerOrder.getAllPlayersToArrayList()){
-            player.drawCard();
+            //player.drawCard();
         }
 
 
@@ -133,8 +133,51 @@ public class GameLogic{
     }
 
     public void playGame() {
+        Scanner userInput = new Scanner(System.in);
+
         System.out.println("These are your cards: ");
-        System.out.println(playerOrder.getCurrentPlayer().showHand());
+        boolean flag = true;
+        while(flag){
+            System.out.println(playerOrder.getCurrentPlayer().showHand());
+            System.out.println("What is the index of the card you would like to play? (Or enter 0 to draw a card) ");
+            int choice = userInput.nextInt();
+
+            if(choice == 0){
+                playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
+                System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn the following card: " + drawPile.get(0).getCardColour() + " " + drawPile.get(0).getCardType());
+                drawPile.remove(0);
+                flag = false;
+            }
+            //check if input is valid but not 0
+            else if(choice > 0 && choice <= playerOrder.getCurrentPlayer().getHand().size()){
+
+                Card card = playerOrder.getCurrentPlayer().getHand().get(choice - 1);
+                if(card.playCardOnAnother(discardPile.get(0))){
+                    discardPile.addFirst(card);
+                    playerOrder.getCurrentPlayer().getHand().remove(card);
+                    System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
+                    flag = false;
+                }
+
+                else{
+                    System.out.println(" Card cannot be played. Choose another or enter 0 to draw a card. ");
+                }
+
+
+
+
+
+                flag = false;
+            }
+
+            else{
+                System.out.println("Invalid input. Try again");
+            }
+
+        }
+
+
+
 
 
 
