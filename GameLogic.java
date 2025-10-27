@@ -56,6 +56,19 @@ public class GameLogic{
 
             }
         }
+        //this is to make sure the top card isn't a special card
+        while (
+                drawPile.get(0).getCardType() == Card.Type.DRAW_ONE ||
+                        drawPile.get(0).getCardType() == Card.Type.WILD_DRAW2 ||
+                        drawPile.get(0).getCardType() == Card.Type.WILD ||
+                        drawPile.get(0).getCardType() == Card.Type.REVERSE ||
+                        drawPile.get(0).getCardType() == Card.Type.SKIP
+        ) {
+            Card topCard = drawPile.remove(0);
+            drawPile.add(topCard);
+        }
+
+        discardPile.add(0, drawPile.remove(0));
         discardPile.add(0,drawPile.get(0));
         drawPile.remove(0);
 
@@ -70,9 +83,6 @@ public class GameLogic{
         dealCardsBeginning();
         System.out.println();
         discardPile.get(0);
-        while(discardPile.get(0).getCardType() == Card.Type.DRAW_ONE || discardPile.get(0).getCardType() == Card.Type.WILD_DRAW2 || discardPile.get(0).getCardType() == Card.Type.WILD){
-            discardPile.get(0);
-        }
         System.out.println("Top Card: " + discardPile.get(0));
         System.out.println();
 
@@ -144,6 +154,7 @@ public class GameLogic{
                         else if (card.getCardType().equals(Card.Type.SKIP)) {
 
                             System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
+                            playerOrder.getCurrentPlayer().getHand().remove(card);
 
                             //if direction is CW
                             if (direction) {
@@ -156,20 +167,23 @@ public class GameLogic{
                                 playerOrder.nextPlayerCounterClockwise();
                                 System.out.println( playerOrder.getCurrentPlayer().getName() + "'s turn has been skipped\n");
                             }
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
 
                         }
-                        else if (card.getCardType().equals(Card.Type.WILD)) {
-                            System.out.println("WIlD card has been played. Enter the colour that will be played next: (RED, GREEN, BLUE, YELLOW)");
-                            userInput.nextLine();
-                            String colour = userInput.nextLine().toUpperCase();
-                            flag = true;
+                        else if (card.getCardType() == Card.Type.WILD) {
+                            System.out.println("WILD card played. Enter the colour (RED, GREEN, BLUE, YELLOW):");
 
+                            // If you previously used nextInt()/next() elsewhere, clear the leftover newline once:
+                            if (userInput.hasNextLine()) userInput.nextLine();
+
+                            flag = true;
                             while (flag) {
-                                if (!colour.equals("RED") && !colour.equals("GREEN") && !colour.equals("BLUE") && !colour.equals("YELLOW")) {
-                                    System.out.println("Invalid colour. Please try again");
+                                String colour = userInput.nextLine().trim().toUpperCase();
+
+                                if (!colour.equals("RED") && !colour.equals("GREEN") &&
+                                        !colour.equals("BLUE") && !colour.equals("YELLOW")) {
+                                    System.out.println("Invalid colour. Please try again (RED, GREEN, BLUE, YELLOW):");
                                 } else {
-                                    card.setCardColour(colour);
+                                    card.setCardColour(colour); // if this expects String
                                     flag = false;
                                 }
                             }
@@ -177,7 +191,7 @@ public class GameLogic{
                         else if (card.getCardType().equals(Card.Type.WILD_DRAW2)) {
                             System.out.println("WIlD DRAW2 card has been played. Enter the colour that will be played next: (RED, GREEN, BLUE, YELLOW)");
                             userInput.nextLine();
-                            String colour = userInput.nextLine().toUpperCase();
+                            String colour = userInput.nextLine();
                             flag = true;
 
                             while (flag) {
