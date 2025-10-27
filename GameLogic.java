@@ -139,7 +139,7 @@ public class GameLogic{
         boolean flag = true;
         while(flag){
             System.out.println(playerOrder.getCurrentPlayer().showHand());
-            System.out.println("What is the index of the card you would like to play? (Or enter 0 to draw a card) ");
+            System.out.println(playerOrder.getCurrentPlayer().getName() + ", What is the index of the card you would like to play? (Or enter 0 to draw a card) ");
             int choice = userInput.nextInt();
 
             if(choice == 0){
