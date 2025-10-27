@@ -35,26 +35,18 @@ public class Game {
 
         PlayerOrder playerOrder = new PlayerOrder();
 
-            if (numPlayers > 4 || numPlayers < 2) {
-                System.out.println("Invalid number of Players!");
-                System.out.println("Please try again!");
+            while (players.size() < numPlayers) {
+                System.out.print("Enter the player name: ");
+                String playerName = userInput.nextLine();
 
-            }
-            else {
-                //valid number of players
-                while (players.size() < numPlayers){
-                   System.out.println("Enter the player name: ");
-                   String playerName = userInput.next();
-                   if (players.contains(playerName)){
-                       System.out.println("That player already exists.");
-                       continue;
-                   }
-                   players.add(playerName);
-                   Player player = new Player(playerName);
-                   playerOrder.addPlayer(player);
-
-
+                if (players.contains(playerName)) {
+                    System.out.println("That player already exists.\n");
+                    continue;
                 }
+
+                players.add(playerName);
+                Player player = new Player(playerName);
+                playerOrder.addPlayer(player);
             }
 
             //start game
