@@ -48,6 +48,10 @@ public class Card {
         return cardColour;
     }
 
+    public void setCardColour(Colour colour){
+        cardColour = colour;
+    }
+
 
     //checks if this card can be played on top of another
     public boolean playCardOnAnother(Card topCard){
