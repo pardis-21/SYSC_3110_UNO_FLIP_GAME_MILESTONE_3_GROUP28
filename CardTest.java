@@ -64,6 +64,29 @@ public class CardTest {
     }
 
     @Test
+    public void testPointsForCard(){
+        Card c1 = new Card();
+        assertTrue(Card.pointsForCard(c1) >= 0);
+    }
+
+    @Test
+    public void testPointsForHand(){
+
+        ArrayList<Card> hand= new ArrayList<>();
+        Card c1 = new Card();
+        Card c2 = new Card();
+        hand.add(c1);
+        hand.add(c2);
+
+        int value = Card.pointsForCard(c1) + Card.pointsForCard(c2);
+        int valueHand = Card.pointsForHand(hand);
+
+        assertEquals(value, valueHand);
+    }
+
+
+
+    @Test
     public void testToString(){
         Card card = new Card();
         String result = card.toString();
