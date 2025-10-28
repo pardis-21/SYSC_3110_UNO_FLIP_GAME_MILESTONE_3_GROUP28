@@ -26,7 +26,7 @@ public class GameLogic{
             playerOrder.addPlayer(player);
         }
 
-        initScores();
+
 
         discardPile = new ArrayList<>();
 
@@ -273,16 +273,16 @@ public class GameLogic{
                 pointsgained += Card.pointsForHand(player.getHand());
             }
         }
-
-        // Updating the winner's score
-        scores.put(winner, scores.get(winner) + pointsgained);
-
+        scores.put(winner, scores.getOrDefault(winner, 0) + pointsgained);
         System.out.println(winner.getName() + " earns " + pointsgained + " points! Total = " + scores.get(winner));
+        return;
+
     }
 
     public Player getMatchWinner(int target) {
         for (Player p : playerOrder.getAllPlayersToArrayList()) {
-            if (scores.get(p) >= target) {
+            Integer s = scores.get(p);
+            if (s != null && s >= target){
                 return p;
             }
         }
@@ -300,6 +300,9 @@ public class GameLogic{
     }
     public void setPlayerOrder(PlayerOrder playerOrder){
         this.playerOrder = playerOrder;
+        for (Player p : playerOrder.getAllPlayersToArrayList()) {
+            scores.putIfAbsent(p, 0);
+        }
     }
     public void playUNOGame(){
 
