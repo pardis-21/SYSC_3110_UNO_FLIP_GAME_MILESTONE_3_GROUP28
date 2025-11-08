@@ -28,19 +28,16 @@ public class GameLogic{
      *
      * @param playerNames a list of player names participating in the game
      */
-    public GameLogic(ArrayList<String> playerNames) {
+    public GameLogic(ArrayList<Player> playerNames) {
 
         //creating an arrayList of players
 
         //instance of that class
         playerOrder = new PlayerOrder();
 
-        //adding players to doublylinkedlist
-        for (int i = 0; i < playerNames.size(); i++){
-            Player player = new Player(playerNames.get(i));
+        for(Player player: playerNames){
             playerOrder.addPlayer(player);
         }
-
 
 
         discardPile = new ArrayList<>();
@@ -60,7 +57,7 @@ public class GameLogic{
     /**
      * Initializes the score map with each player's score set to 0.
      */
-    private void initScores() {
+    public void initScores() {
         for (Player player : playerOrder.getAllPlayersToArrayList()) {
             scores.put(player, 0);
         }

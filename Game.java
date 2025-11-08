@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import java.util.*;
 /**
  * The Game class runs the main UNO game.
@@ -10,89 +9,83 @@ import java.util.*;
  * @Author Pardis Ehsani 101300400
  */
 public class Game {
-    static ArrayList<String> players;
+    static public ArrayList<Player> players = new ArrayList<>();
+    public int numPlayers;
+    PlayerOrder playerOrder = new PlayerOrder();
+
+    public Game() {
+        Scanner userInput = new Scanner(System.in);
+        numPlayers = 0;
+
+        System.out.println("Welcome to UNO");
+        System.out.println("---------------------------------------");
+
+//       ____________________CODE MOVED TO UNOFRAME________________
+//        // get number of players
+//        while (true) {
+//            System.out.print("Enter the number of Players (2–4): ");
+//            try {
+//                numPlayers = userInput.nextInt();
+//                userInput.nextLine();
+//                if (numPlayers < 2 || numPlayers > 4) {
+//                    System.out.println("Invalid number of players! Please enter 2–4.\n");
+//                } else break;
+//            } catch (InputMismatchException e) {
+//                System.out.println("Invalid input! Please enter a number between 2 and 4.\n");
+//                userInput.nextLine();
+//            }
+//        }
+//
+//        // get player names
+//        while (players.size() < numPlayers) {
+//            System.out.print("Enter player name: ");
+//            String playerName = userInput.nextLine().trim();
+//
+//            //make sure 2 players by same name don't exist
+//            boolean exists = false;
+//            for (Player player : players) {
+//                if (player.getName().equals(playerName)) {
+//                    System.out.println("That player already exists.\n");
+//                    exists = true;
+//                    break;
+//                }
+//            }
+//            if (!exists) {
+//                addNewPlayer(playerName);
+//            }
+//        }
+
+
+        // initialize GameLogic ONCE, so scores persist
+        GameLogic gameLogic = new GameLogic(players);
+        gameLogic.setPlayerOrder(playerOrder);
+        final int TARGET = 500;
+
+        // play multiple rounds until someone wins the match
+        while (true) {
+            System.out.println("\n===== STARTING NEW ROUND =====\n");
+            gameLogic.playUNOGame();
+
+            Player matchWinner = gameLogic.getMatchWinner(TARGET);
+            if (matchWinner != null) {
+                System.out.println(matchWinner.getName() + " reached " + TARGET + " points!");
+                System.out.println("GAME OVER!");
+                break;
+            }
+
+            System.out.println("No one has reached " + TARGET + " points yet. Press ENTER to start a new round.");
+            userInput.nextLine();
+        }
+
+    }
+
+    public void addNewPlayer(String playerName){
+        Player player = new Player(playerName);
+        players.add(player);
+        playerOrder.addPlayer(player);
+    }
 
     public static void main(String[] args) {
-        Scanner userInput = new Scanner(System.in);
-        int numPlayers = 0;
-        players = new ArrayList<>();
-
-        while (true) {
-            System.out.println("Welcome to UNO");
-            System.out.println("---------------------------------------");
-
-            while (true) {
-                System.out.print("Enter the number of Players (2–4): ");
-
-                try {
-                    numPlayers = userInput.nextInt();
-                    userInput.nextLine(); // clear the buffer
-
-                    if (numPlayers < 2 || numPlayers > 4) {
-                        System.out.println("Invalid number of players! Please enter a number between 2 and 4.\n");
-                    } else {
-                        break; // valid number, exit inner loop
-                    }
-
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid input! Please enter a number between 2 and 4.\n");
-                    userInput.nextLine(); // clear the invalid input
-                }
-            }
-
-
-        PlayerOrder playerOrder = new PlayerOrder();
-
-            while (players.size() < numPlayers) {
-                System.out.print("Enter the player name: ");
-                String playerName = userInput.nextLine();
-
-                if (players.contains(playerName)) {
-                    System.out.println("That player already exists.\n");
-                    continue;
-                }
-
-                players.add(playerName);
-                Player player = new Player(playerName);
-                playerOrder.addPlayer(player);
-            }
-
-            //start game
-
-            GameLogic gameLogic;
-            final int TARGET = 500;
-
-            while (true) {
-                // create a new game for each round
-                gameLogic = new GameLogic(players);
-                gameLogic.setPlayerOrder(playerOrder);
-
-                // play one round
-                gameLogic.playUNOGame();
-
-                // check if someone reached 500
-                Player matchWinner = gameLogic.getMatchWinner(TARGET);
-
-                if (matchWinner != null) {
-                    System.out.println("🏆 " + matchWinner.getName() + " reached " + TARGET + " points!");
-                    System.out.println("GAME OVER!");
-                    break; // stop entire match
-                }
-
-                // otherwise, let user start new round
-                Scanner in = new Scanner(System.in);
-                System.out.println("No winner yet. Type 'NEW' to start a new round");
-                while (!in.nextLine().trim().equalsIgnoreCase("NEW")) {
-                    System.out.println("Type 'NEW' to start a new round");
-                }
-            }
-
-
-
-
-
-
-
-        }
+        Game game = new Game();
     }
 }

@@ -7,35 +7,38 @@ import static org.junit.Assert.*;
 
 public class GameLogicTest {
 
-    private GameLogic game;
-    private ArrayList<String> playerNames;
+    private GameLogic gameLogic;
+    private Game game;
+    private ArrayList<Player> playerNames;
 
     @Before
     public void setUp() {
+        game = new Game();
         playerNames = new ArrayList<>();
-        playerNames.add("1");
-        playerNames.add("2");
-        playerNames.add("3");
 
-        game = new GameLogic(playerNames);
+        game.addNewPlayer("1");
+        game.addNewPlayer("2");
+        game.addNewPlayer("3");
+
+        gameLogic = new GameLogic(playerNames);
     }
 
     @Test
     public void testConstructorDoesNotCrash() {
-        assertNotNull("GameLogic instance should be created", game);
+        assertNotNull("GameLogic instance should be created", gameLogic);
     }
 
     @Test
     public void testInitScores() throws Exception {
-        game.initScores();
+        gameLogic.initScores();
 
         Field scoresField = GameLogic.class.getDeclaredField("scores");
         scoresField.setAccessible(true);
-        Map<Player, Integer> scores = (Map<Player, Integer>) scoresField.get(game);
+        Map<Player, Integer> scores = (Map<Player, Integer>) scoresField.get(gameLogic);
 
         Field playerOrderField = GameLogic.class.getDeclaredField("playerOrder");
         playerOrderField.setAccessible(true);
-        Object playerOrderObj = playerOrderField.get(game);
+        Object playerOrderObj = playerOrderField.get(gameLogic);
 
         ArrayList<Player> players = (ArrayList<Player>) playerOrderObj
                 .getClass()
@@ -50,14 +53,14 @@ public class GameLogicTest {
 
     @Test
     public void testStartGameSetsTopCard() {
-        game.startGame();
-        assertNotNull("Top card should not be null after starting the game", game.getTopCard());
+        gameLogic.startGame();
+        assertNotNull("Top card should not be null after starting the game", gameLogic.getTopCard());
     }
 
     @Test
     public void testPlayerTurnRunsWithoutException() {
         try {
-            game.playerTurn();
+            gameLogic.playerTurn();
         } catch (Exception e) {
             fail("playerTurn should not throw an exception");
         }
@@ -65,21 +68,21 @@ public class GameLogicTest {
 
     @Test
     public void testGetMatchWinnerReturnsNullIfNoOneWins() {
-        game.startGame();
-        assertNull("No winner should be returned if no one reached target", game.getMatchWinner(100));
+        gameLogic.startGame();
+        assertNull("No winner should be returned if no one reached target", gameLogic.getMatchWinner(100));
     }
 
     @Test
     public void testSetPlayerOrderAddsPlayersToScores() throws Exception {
-        game.initScores();
+        gameLogic.initScores();
 
         Field scoresField = GameLogic.class.getDeclaredField("scores");
         scoresField.setAccessible(true);
-        Map<Player, Integer> scores = (Map<Player, Integer>) scoresField.get(game);
+        Map<Player, Integer> scores = (Map<Player, Integer>) scoresField.get(gameLogic);
 
         Field playerOrderField = GameLogic.class.getDeclaredField("playerOrder");
         playerOrderField.setAccessible(true);
-        Object oldPlayerOrder = playerOrderField.get(game);
+        Object oldPlayerOrder = playerOrderField.get(gameLogic);
 
         ArrayList<String> newNames = new ArrayList<>();
         newNames.add("4");
@@ -88,9 +91,9 @@ public class GameLogicTest {
             newOrder.addPlayer(new Player(name));
         }
 
-        game.setPlayerOrder(newOrder);
+        gameLogic.setPlayerOrder(newOrder);
 
-        Object newPlayerOrderObj = playerOrderField.get(game);
+        Object newPlayerOrderObj = playerOrderField.get(gameLogic);
         ArrayList<Player> newPlayers = (ArrayList<Player>) newPlayerOrderObj
                 .getClass()
                 .getMethod("getAllPlayersToArrayList")
