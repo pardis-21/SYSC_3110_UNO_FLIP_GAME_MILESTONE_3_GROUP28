@@ -10,6 +10,7 @@ public class UnoViewFrame extends JFrame {
 
     private JPanel cardPanel; // panel for current player's cards
     private JPanel decksPanel; // panel for the discard pile, new card pile, and "UNO!" button
+    private JButton drawPile;
     public JPanel scorePanel; // panel for the player's score
     private JButton playerCardButtons[];
     private JButton unoButton;
@@ -29,60 +30,32 @@ public class UnoViewFrame extends JFrame {
     public UnoViewFrame(UnoController controller){
        this.controller = controller;
 
-       model = new GameLogicModel();
+       this.model = new GameLogicModel(playerNames);
 
-        while (true) {
-            String userInput = JOptionPane.showInputDialog(null, "Enter the number of Players (2–4): ");
-            model.playersOrder = Integer.parseInt(userInput);
-            int numPlayers = model.getTotalNumberOfPlayers();
-
-            try {
-                if (numPlayers < 2 || numPlayers > 4) {
-                    JOptionPane.showMessageDialog(null, "Invalid number of players! Please enter 2–4.");
-                } else
-                    break;
-            }
-            catch (InputMismatchException e) {
-                JOptionPane.showMessageDialog(null, "Invalid number of players! Please enter 2–4.");
-            }
-        }
-
-        while (model.players.size() < model.numPlayers) {
-            String playerName = JOptionPane.showInputDialog(null, "Enter player name");
-
-            //make sure 2 players by same name don't exist
-            boolean exists = false;
-            for (Player player : model.players) {
-                if (player.getName().equals(playerName)) {
-                    JOptionPane.showMessageDialog(null, "That player already exists!");
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                model.addNewPlayer(playerName);
-            }
-        }
 
         cardPanel = new JPanel(); // display the players cards
         decksPanel = new JPanel();
+
         scorePanel = new JPanel(); // display score
         discardPile = new JButton(); //shows top card on discard pile
-        newCard = new JButton(); //pile to take a card
-        UNOButton = new JButton(); // when player has one card, button shows
+        drawPile = new JButton("DRAW"); //pile to take a card
+        UNOButton = new JButton("UNO"); // when player has one card, button shows
 
         // SETTING UP NEWCARD BUTTON
-        newCard.setPreferredSize(new Dimension(150, 150));
-        newCard.setFont(new Font("Arial", Font.BOLD, 16));
-        newCard.setBackground(Color.GRAY);
-        newCard.setForeground(Color.BLACK);
-        newCard.setText("pick a card");
+        drawPile.setPreferredSize(new Dimension(150, 150));
+        drawPile.setFont(new Font("Arial", Font.BOLD, 16));
+        drawPile.setBackground(Color.GRAY);
+        drawPile.setForeground(Color.BLACK);
 
         //SETTING UP SCOREPANEL
         JLabel scoreLabel = new JLabel("Score: 0");
         scoreLabel.setForeground(Color.BLACK);
         scorePanel.setBackground(new Color(30, 120,60));
         scorePanel.add(scoreLabel);
+
+        //DECK PANEL
+        decksPanel.add(drawPile);
+
 
 
         // TESTING RANDOM CARD FOR DISCARD PILE
@@ -193,20 +166,18 @@ public class UnoViewFrame extends JFrame {
         cardPanel.revalidate();
         cardPanel.repaint();
 
-
-
     }
 
     private void handlePlayerCard(Card card){
         GameLogicModel model = new GameLogicModel(playerNames);
-
-            if (model.getDirection()) {
-                game.playerOrder.nextPlayerClockwise();
-            }
-            else {
-                game.playerOrder.nextPlayerCounterClockwise();
-            }
+                model.playerTurn();
             startGamePlayerButtons();
+
+    }
+
+    public static void main(String[] args) {
+        UnoController controller = new UnoController();
+        UnoViewFrame view =  new UnoViewFrame(controller);
     }
 
 

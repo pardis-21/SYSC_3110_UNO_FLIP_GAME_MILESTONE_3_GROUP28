@@ -81,13 +81,22 @@ public class Game {
 
     }
 
-    public void addNewPlayer(String playerName){
-        Player player = new Player(playerName);
-        players.add(player);
-        playerOrder.addPlayer(player);
-    }
-
     public static void main(String[] args) {
-        Game game = new Game();
+        Player player1 = new Player("1");
+        Player player2 = new Player("2");
+        Player player3 = new Player("3");
+
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+
+        GameLogicModel model = new GameLogicModel(players);
+        UnoController controller = new UnoController();
+        UnoViewFrame view = new UnoViewFrame(controller);
+        view.setVisible(true);
+
+
+
+
     }
 }

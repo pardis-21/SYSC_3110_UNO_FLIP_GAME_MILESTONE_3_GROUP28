@@ -13,14 +13,17 @@ public class GameLogicModelTest {
 
     @Before
     public void setUp() {
-        game = new Game();
         playerNames = new ArrayList<>();
-
-        game.addNewPlayer("1");
-        game.addNewPlayer("2");
-        game.addNewPlayer("3");
+        playerNames.add(new Player("1"));
+        playerNames.add(new Player("2"));
+        playerNames.add(new Player("3"));
 
         gameLogic = new GameLogicModel(playerNames);
+
+        PlayerOrder playerOrder = new PlayerOrder();
+        playerOrder.addPlayer(playerNames.get(0));
+        playerOrder.addPlayer(playerNames.get(1));
+        playerOrder.addPlayer(playerNames.get(2));
     }
 
     @Test

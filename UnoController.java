@@ -11,8 +11,9 @@ public class UnoController implements ActionListener {
 
     public UnoController(){
 
-        model = new GameLogicModel(Game.players);
-        viewFrame = new UnoViewFrame(this);
+
+        this.model = new GameLogicModel(Game.players);
+        this.viewFrame = new UnoViewFrame(this);
 
         viewFrame.newCard.addActionListener(this);
        // frame.UNOButton.addActionListener(this);
@@ -21,6 +22,7 @@ public class UnoController implements ActionListener {
         viewFrame.discardPile.addActionListener(this);
 
         model.startGame();
+
 
     }
 

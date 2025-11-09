@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 import java.util.Scanner;
 
@@ -31,6 +32,7 @@ public class GameLogicModel {
     public GameLogicModel(ArrayList<Player> playerNames) {
 
         //creating an arrayList of players
+
 
         //instance of that class
         playerOrder = new PlayerOrder();
@@ -390,6 +392,42 @@ public class GameLogicModel {
      */
     public int getTotalNumberOfPlayers(){
         return playerOrder.getAllPlayersToArrayList().size();
+    }
+
+    public void initializePlayers(){
+        String userInput = JOptionPane.showInputDialog(null, "Enter the number of Players (2–4): ");
+        int players = Integer.parseInt(userInput);
+        int numPlayers = getTotalNumberOfPlayers();
+        while (true) {
+
+            try {
+                if (numPlayers < 2 || numPlayers > 4) {
+                    JOptionPane.showMessageDialog(null, "Invalid number of players! Please enter 2–4.");
+                } else
+                    break;
+            }
+            catch (InputMismatchException e) {
+                JOptionPane.showMessageDialog(null, "Invalid number of players! Please enter 2–4.");
+            }
+        }
+
+        while (players < numPlayers) {
+            String playerName = JOptionPane.showInputDialog(null, "Enter player name");
+
+            //make sure 2 players by same name don't exist
+            boolean exists = false;
+            for (Player player : playerOrder.getAllPlayersToArrayList()) {
+                if (player.getName().equals(playerName)) {
+                    JOptionPane.showMessageDialog(null, "That player already exists!");
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                Player player = new Player(playerName);
+                playerOrder.addPlayer(player);
+            }
+        }
     }
 
 
