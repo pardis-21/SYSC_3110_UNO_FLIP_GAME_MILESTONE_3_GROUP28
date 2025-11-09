@@ -7,7 +7,6 @@ import java.util.List;
 
 public class UnoViewFrame extends JFrame {
 
-    private GameLogicModel model;
 
     private JPanel cardPanel; // panel for current player's cards
     private JPanel decksPanel; // panel for the discard pile, new card pile, and "UNO!" button
@@ -16,6 +15,10 @@ public class UnoViewFrame extends JFrame {
     private JButton unoButton;
     private static final int NUMBER_OF_CARDS_BEGGING_GAME = 7;
     private ArrayList<Player> playerNames;
+    private UnoController controller;
+
+    private GameLogicModel model;
+
 
     //JButton nextPlayerButton;
 
@@ -23,13 +26,14 @@ public class UnoViewFrame extends JFrame {
     public JButton newCard;
     public JButton UNOButton;
 
-    public UnoViewFrame(GameLogicModel model){
-        this.model = model;
-        this.model = new GameLogicModel(Game.players);
+    public UnoViewFrame(UnoController controller){
+       this.controller = controller;
+
+       private
 
         while (true) {
             String userInput = JOptionPane.showInputDialog(null, "Enter the number of Players (2–4): ");
-            model.numPlayers = Integer.parseInt(userInput);
+            model.playerOrder = Integer.parseInt(userInput);
 
             try {
                 if (model.numPlayers < 2 || model.numPlayers > 4) {
