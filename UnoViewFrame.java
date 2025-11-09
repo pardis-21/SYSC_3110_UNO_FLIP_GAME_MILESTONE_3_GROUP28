@@ -2,17 +2,16 @@ import javax.swing.*;
 import javax.swing.JOptionPane;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 
-public class UnoViewFrame extends JFrame {
+public class UnoViewFrame extends JFrame implements UnoView {
 
 
     private JPanel cardPanel; // panel for current player's cards
     private JPanel decksPanel; // panel for the discard pile, new card pile, and "UNO!" button
     private JButton drawPile;
     public JPanel scorePanel; // panel for the player's score
-    private JButton playerCardButtons[];
+
     private JButton unoButton;
     private static final int NUMBER_OF_CARDS_BEGGING_GAME = 7;
     private ArrayList<Player> playerNames;
@@ -21,16 +20,34 @@ public class UnoViewFrame extends JFrame {
     private GameLogicModel model;
 
 
-    //JButton nextPlayerButton;
+
+    //PLAYER CARDS IN HAND AS BUTTONS
+    private JButton[] playerCardButtons;
+    //private JButton playerCard;
+    private static final int SEVEN = 7;
+
 
     public JButton discardPile;
     public JButton newCard;
     public JButton UNOButton;
 
-    public UnoViewFrame(UnoController controller){
-       this.controller = controller;
+    public UnoViewFrame(){
+        super("Uno");
+        controller = new UnoController(model);
 
-       this.model = new GameLogicModel(playerNames);
+        //FRAME PROPERTIES
+        getContentPane().setBackground(new Color(30, 120,60));
+        setTitle("UNO FLIP - MILESTONE 2");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
+        this.controller = controller;
+
+        //subscribing to the view
+        model = new GameLogicModel();
+        model.addUnoViewFrame(this);
+        this.setVisible(true);
 
 
         cardPanel = new JPanel(); // display the players cards
@@ -42,6 +59,7 @@ public class UnoViewFrame extends JFrame {
         UNOButton = new JButton("UNO"); // when player has one card, button shows
 
         // SETTING UP NEWCARD BUTTON
+        newCard = new JButton("NEW CARD");
         drawPile.setPreferredSize(new Dimension(150, 150));
         drawPile.setFont(new Font("Arial", Font.BOLD, 16));
         drawPile.setBackground(Color.GRAY);
@@ -55,8 +73,6 @@ public class UnoViewFrame extends JFrame {
 
         //DECK PANEL
         decksPanel.add(drawPile);
-
-
 
         // TESTING RANDOM CARD FOR DISCARD PILE
         Card topCard = new Card();
@@ -74,7 +90,6 @@ public class UnoViewFrame extends JFrame {
         discardPile.setPreferredSize(new Dimension(150, 150));
 
 
-
         // ADDING LAYOUT
         setLayout(new BorderLayout());
         decksPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 200));
@@ -86,26 +101,16 @@ public class UnoViewFrame extends JFrame {
         add(scorePanel, BorderLayout.NORTH);
 
 
-        //FRAME PROPERTIES
-        getContentPane().setBackground(new Color(30, 120,60));
-        setTitle("UNO FLIP - MILESTONE 2");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-
 
 // WHEN LAYER PRESSESS NEWCARD BUTTON, ONE RANDOM CARD IS ADDED TO THEIR HAND
         // WHEN PLAYER HAND == 1, UNO BUTTON SHOWS AND THEY HAVE TO CLICK IT, IF NOT THEY GET 2 RANDOM CARDS ADDED
         // IF PLAYER ONE PLAYS, POP UP SAY PLAYER 2? PRESS OK,PLAYER 2 CAN PLAY
         // WHEN INSIDE PLAYER 2, SHOWS PLAYER 2 HAND
 
-        //FIGURE OUT HOW TO DO FOR ALL PLAYERS
+
         cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
 
-    //START THE GAME
-        model.startGame();
-        startGamePlayerButtons();
 
 
     }
@@ -130,7 +135,6 @@ public class UnoViewFrame extends JFrame {
     //STARTING THE GAME FOR THE FIRST 7 CARDS PER PLAYER
     public void startGamePlayerButtons(){
 
-
         //JButton playerCardButton = playerCardButtons[NUMBER_OF_CARDS_BEGGING_GAME];
         //CLEARING EVERYTHING AT THE START OF THE GAME
         cardPanel.removeAll();
@@ -143,42 +147,40 @@ public class UnoViewFrame extends JFrame {
         //DEBUGGING PURPOSES CAN DELETE LATER ENSURING THAT THE CORRECT PLAYER HAND IS SHOWN
         System.out.println("SHOWING CARDS FOR: " + currentPlayer.showHand());
         String displayText;
+
+
         //CREATING THE BUTTON ARRAY FOR THE BOTTOM PANEL CARDPANEL IN THE FRAME
-        for (Card card: currentPlayer.getHand()){
+        List<Card> hand = controller.getCurrentPlayerHand();
 
-            if (card.getCardType().ordinal() <= 9) {
-                displayText = String.valueOf(card.getCardType().ordinal());
-
+        for (Card card: hand){
+            PlayerCardButton playerCardButtons = new PlayerCardButton(card);
+            playerCardButtons.addActionListner(controller);
+            /*
+            for (int i = 0; i < SEVEN; i++) {
+                PlayerCardButton playerButton = new PlayerCardButton(card);
+                playerCardButtons[i] = playerButton;
+                playerButton.addActionListener(controller);
+                playerButton.setFocusable(true);
+                playerCardButtons[i].setFocusable(false);
+                cardPanel.add(playerButton);
             }
-            else {
-                displayText = card.getCardType().toString();
-            }
 
-            JButton cardButton = new JButton(displayText);
-            cardButton.setBackground(card.JavaCardColour(card.getCardColour()));
-            cardButton.setForeground(Color.BLACK);
-            cardButton.setPreferredSize(new Dimension(80, 100));
 
-            //ACTION LISTNER HERE
-            cardButton.addActionListener(e -> handlePlayerCard(card));
-            cardPanel.add(cardButton);
+             */
+
         }
         cardPanel.revalidate();
         cardPanel.repaint();
 
     }
 
-    private void handlePlayerCard(Card card){
-        GameLogicModel model = new GameLogicModel(playerNames);
-                model.playerTurn();
-            startGamePlayerButtons();
+    //called by model.notifyObserver()
+    private void update(){
+        model.playerTurn();
+        startGamePlayerButtons();
 
     }
 
-    public static void main(String[] args) {
-        UnoController controller = new UnoController();
-        UnoViewFrame view =  new UnoViewFrame(controller);
-    }
 
 
 }

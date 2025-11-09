@@ -9,33 +9,40 @@ public class UnoController implements ActionListener {
     private GameLogicModel model;
 
 
-    public UnoController(){
+    public UnoController(GameLogicModel model) {
+
+        this.model = new GameLogicModel();
 
 
-        this.model = new GameLogicModel(Game.players);
-        this.viewFrame = new UnoViewFrame(this);
 
+    }
+
+    public void setView(UnoViewFrame viewFrame) {
+        this.viewFrame = viewFrame;
         viewFrame.newCard.addActionListener(this);
-       // frame.UNOButton.addActionListener(this);
+        // frame.UNOButton.addActionListener(this);
         model.startGame();
         viewFrame.updateTopCard(model.getTopCard());
         viewFrame.discardPile.addActionListener(this);
 
         model.startGame();
-
-
     }
 
-    public void onCardClicked(Card heldCard){
+
+
+
+    public void onCardClicked(Card heldCard) {
         Card top = model.getTopCard();
 
-        //
-        if (heldCard.equals(top)){
+        if (heldCard.playCardOnAnother(top)) {
             model.playGame();
-            model.playerTurn();
-
             updateView();
         }
+    }
+
+    public void onDrawClicked(){
+        model.drawCardCurrentPlayer();
+        updateView();
     }
 
 
@@ -60,10 +67,19 @@ public class UnoController implements ActionListener {
     }
 
     public void updateView() {
-    PlayerOrder playerOrder = new PlayerOrder();
-    List<Card> hand = model.getPlayerHand();
-    viewFrame.updateHand(hand);
-        viewFrame.updateTopCard(model.getTopCard());
+        if (viewFrame == null) {
+            return;
+        }
+        else {
+            PlayerOrder playerOrder = new PlayerOrder();
+            List<Card> hand = model.getPlayerHand();
+            viewFrame.updateHand(hand);
+            viewFrame.updateTopCard(model.getTopCard());
+        }
 
+    }
+
+    public List<Card> getCurrentPlayerHand() {
+        return model.getCurrentPlayer().getHand();
     }
 }

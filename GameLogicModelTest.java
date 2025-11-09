@@ -18,7 +18,7 @@ public class GameLogicModelTest {
         playerNames.add(new Player("2"));
         playerNames.add(new Player("3"));
 
-        gameLogic = new GameLogicModel(playerNames);
+        //gameLogic = new GameLogicModel(playerNames);
 
         PlayerOrder playerOrder = new PlayerOrder();
         playerOrder.addPlayer(playerNames.get(0));

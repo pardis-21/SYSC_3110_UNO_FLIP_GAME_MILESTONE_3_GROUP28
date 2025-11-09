@@ -22,24 +22,25 @@ public class GameLogicModel {
     private final Map<Player, Integer> scores = new HashMap<>();
     private static final int SEVEN = 7;
 
+    //NEW GUI COMPONENTS ADDED
+    private List<UnoView> views;
+
+
 
     /**
      * Constructs a new GameLogic instance and initializes players, draw pile,
      * and default direction.
      *
-     * @param playerNames a list of player names participating in the game
      */
-    public GameLogicModel(ArrayList<Player> playerNames) {
+    public GameLogicModel() {
 
         //creating an arrayList of players
+
 
 
         //instance of that class
         playerOrder = new PlayerOrder();
 
-        for(Player player: playerNames){
-            playerOrder.addPlayer(player);
-        }
 
 
         discardPile = new ArrayList<>();
@@ -54,6 +55,10 @@ public class GameLogicModel {
 
         //assuming by UNO rules that all players have same age and starting from CW direction
         direction = true; //clockwise direction
+    }
+
+    public void addUnoViewFrame(UnoView view){
+        views.add(view);
     }
 
     /**
@@ -446,4 +451,10 @@ public class GameLogicModel {
     }
 
 
+    public void drawCardCurrentPlayer() {
+        getCurrentPlayer().getHand().add(drawPile.get(0));
+        drawPile.remove(0);
+
+
+    }
 }
