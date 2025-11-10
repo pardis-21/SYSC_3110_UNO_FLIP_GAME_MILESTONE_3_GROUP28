@@ -483,6 +483,7 @@ public class GameLogicModel {
 
         discardPile.add(0, card);
 
+
         setTurnCompleted(true);
         // need to implement special cards
 

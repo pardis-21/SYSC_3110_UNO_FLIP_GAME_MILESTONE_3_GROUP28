@@ -40,7 +40,7 @@ public class Card {
     public enum Colour{
         RED, GREEN, BLUE, YELLOW, RAINBOW; // all colour options
 
-        private static final Colour[] COLOUR_VALUES = values(); // makes an array of all the Colour values (list may be better)
+        public static final Colour[] COLOUR_VALUES = values(); // makes an array of all the Colour values (list may be better)
         private static final int COLOUR_SIZE = values().length; // length of ^
 
 

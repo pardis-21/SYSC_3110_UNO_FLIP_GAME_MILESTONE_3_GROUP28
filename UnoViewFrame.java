@@ -101,7 +101,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
         add(nextPlayerButton, BorderLayout.WEST);
 
 
-// WHEN LAYER PRESSESS NEWCARD BUTTON, ONE RANDOM CARD IS ADDED TO THEIR HAND
+        // WHEN LAYER PRESSESS NEWCARD BUTTON, ONE RANDOM CARD IS ADDED TO THEIR HAND
         // WHEN PLAYER HAND == 1, UNO BUTTON SHOWS AND THEY HAVE TO CLICK IT, IF NOT THEY GET 2 RANDOM CARDS ADDED
         // IF PLAYER ONE PLAYS, POP UP SAY PLAYER 2? PRESS OK,PLAYER 2 CAN PLAY
         // WHEN INSIDE PLAYER 2, SHOWS PLAYER 2 HAND
@@ -143,8 +143,23 @@ public class UnoViewFrame extends JFrame implements UnoView {
         if (card == null) return;
 
         String text = card.getCardColour() + " " + card.getCardType();  // e.g. RED THREE
-        discardPile.setText(text);
 
+        if(card.getCardColour() == Card.Colour.RAINBOW){
+            String[] options = {"RED", "BLUE", "YELLOW", "GREEN"};
+            Object selectedOption = JOptionPane.showInputDialog(
+                    null,
+                    "Please choose a colour to set the rainbow:",
+                    "Selection", // Title of the dialog
+                    JOptionPane.QUESTION_MESSAGE, // Message type (e.g., QUESTION_MESSAGE, INFORMATION_MESSAGE)
+                    null, // Icon (null for default)
+                    options, // Array of options for the dropdown
+                    options[0] // Default selected option
+            );
+            card.setCardColour((String) selectedOption);
+        }
+
+
+        discardPile.setText(text);
         discardPile.setBackground(card.JavaCardColour(card.getCardColour()));
         discardPile.setForeground(Color.BLACK);
         discardPile.setOpaque(true);
