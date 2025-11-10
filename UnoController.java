@@ -14,6 +14,8 @@ public class UnoController implements ActionListener {
         this.model = model;
     }
 
+
+
     public void setView(UnoViewFrame viewFrame) {
         this.viewFrame = viewFrame;
         viewFrame.drawPile.addActionListener(this);
@@ -23,6 +25,8 @@ public class UnoController implements ActionListener {
         viewFrame.nextPlayerButton.addActionListener(this);
         model.startGame();
         updateView();    }
+
+
 
 
 

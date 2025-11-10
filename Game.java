@@ -83,6 +83,7 @@ public class Game {
 
     public static void main(String[] args) {
             GameLogicModel model = new GameLogicModel();
+            model.initializePlayers();
 
             PlayerOrder order = new PlayerOrder();
             order.addPlayer(new Player("Player 1"));

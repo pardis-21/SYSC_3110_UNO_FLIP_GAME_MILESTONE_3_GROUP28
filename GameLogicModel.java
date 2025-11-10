@@ -406,12 +406,14 @@ public class GameLogicModel {
     }
 
     public void initializePlayers(){
-        String userInput = JOptionPane.showInputDialog(null, "Enter the number of Players (2–4): ");
-        int players = Integer.parseInt(userInput);
+      //  int players = Integer.parseInt(userInput);
         int numPlayers = getTotalNumberOfPlayers();
         while (true) {
 
             try {
+                String userInput = JOptionPane.showInputDialog(null, "Enter the number of Players (2–4): ");
+                if(userInput == null) return;
+                numPlayers = Integer.parseInt(userInput);
                 if (numPlayers < 2 || numPlayers > 4) {
                     JOptionPane.showMessageDialog(null, "Invalid number of players! Please enter 2–4.");
                 } else
@@ -422,7 +424,7 @@ public class GameLogicModel {
             }
         }
 
-        while (players < numPlayers) {
+        while (playerOrder.getAllPlayersToArrayList().size() < numPlayers) {
             String playerName = JOptionPane.showInputDialog(null, "Enter player name");
 
             //make sure 2 players by same name don't exist
@@ -460,6 +462,7 @@ public class GameLogicModel {
     public void drawCardCurrentPlayer() {
         getCurrentPlayer().getHand().add(drawPile.get(0));
         drawPile.remove(0);
+        setTurnCompleted(true);
 
 
     }
@@ -479,6 +482,8 @@ public class GameLogicModel {
         getCurrentPlayer().getHand().remove(card);
 
         discardPile.add(0, card);
+
+        setTurnCompleted(true);
         // need to implement special cards
 
         return true;
