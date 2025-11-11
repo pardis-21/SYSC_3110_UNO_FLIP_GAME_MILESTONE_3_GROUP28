@@ -9,6 +9,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
 
     private JPanel cardPanel; // panel for current player's cards
     public JPanel scorePanel; // panel for the player's score
+    public JLabel scoreLabel;
     public JButton nextPlayerButton;
 
     private static final int NUMBER_OF_CARDS_BEGGING_GAME = 7;
@@ -64,7 +65,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
         drawPile.setForeground(Color.BLACK);
 
         //SETTING UP SCORE PANEL
-        JLabel scoreLabel = new JLabel("Score: 0");
+        scoreLabel = new JLabel("Score: 0");
         scoreLabel.setForeground(Color.BLACK);
         scorePanel.setBackground(new Color(30, 120,60));
         scorePanel.add(scoreLabel);

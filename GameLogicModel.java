@@ -19,7 +19,7 @@ public class GameLogicModel {
     private boolean roundEnded = false;
     //private ArrayList<Card> flipPile; for future use
     private boolean direction; //clockwise or counterclockwise
-    private final Map<Player, Integer> scores = new HashMap<>();
+    public final Map<Player, Integer> scores = new HashMap<>();
     private static final int SEVEN = 7;
     private boolean turnCompleted = false;
     int numPlayers = 0;
@@ -238,18 +238,16 @@ public class GameLogicModel {
      * @param winner the player who won the current round
      */
 
-    private void awardRoundPointsTo(Player winner) {
+    public int awardRoundPointsTo(Player winner) {
         int pointsgained = 0;
         for (Player player : playerOrder.getAllPlayersToArrayList()) {
             if (player != winner) {
                 pointsgained += Card.pointsForHand(player.getHand());
             }
         }
-        scores.put(winner, scores.getOrDefault(winner, 0) + pointsgained);
-        System.out.println(winner.getName() + " earns " + pointsgained + " points! Total = " + scores.get(winner));
+        scores.put(winner, (scores.getOrDefault(winner, 0) + pointsgained));
         roundEnded = true;
-        return;
-
+        return pointsgained;
     }
 
     /**
@@ -351,6 +349,8 @@ public class GameLogicModel {
                 playerOrder.addPlayer(player);
             }
         }
+
+        initScores();
     }
 
 

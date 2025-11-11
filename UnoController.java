@@ -48,12 +48,39 @@ public class UnoController implements ActionListener {
 
         updateView();
         model.setTurnCompleted(true);
+
         Card updated = model.getTopCard();
         Card.Type type = updated.getCardType();
         if(type == Card.Type.REVERSE || type == Card.Type.SKIP || type == Card.Type.DRAW_ONE || type == Card.Type.WILD_DRAW2){
             model.setTurnCompleted(false);
         }
 
+        if(model.getCurrentPlayer().getHand().isEmpty()){
+            int points = model.awardRoundPointsTo(model.getCurrentPlayer());
+            JOptionPane.showMessageDialog(null, "Player " + model.getCurrentPlayer().getName() + " wins the round with " + points + " points!!" );
+            viewFrame.scoreLabel.setText("Score: " + model.scores.get(model.getCurrentPlayer()));
+
+            String[] options = {"New game", "Exit"};
+                Object selectedOption = JOptionPane.showInputDialog(
+                        null,
+                        "Continue?",
+                        "Selection", // Title of the dialog
+                        JOptionPane.QUESTION_MESSAGE, // Message type (e.g., QUESTION_MESSAGE, INFORMATION_MESSAGE)
+                        null, // Icon (null for default)
+                        options, // Array of options for the dropdown
+                        options[0] // Default selected option
+                );
+            if(((String)selectedOption).equals(options[1])){
+                JOptionPane.showMessageDialog(null, "Thanks for playing!");
+                System.exit(0);
+            }
+            else{
+                model.startGame();
+                model.setTurnCompleted(false);
+                updateView();
+                JOptionPane.showMessageDialog(null, "New round started!");
+            }
+        }
     }
 
     public void onDrawClicked(){
@@ -97,6 +124,8 @@ public class UnoController implements ActionListener {
 
             model.setTurnCompleted(false);
             model.playerTurn();
+            viewFrame.scoreLabel.setText("Score: " + model.scores.get(model.getCurrentPlayer()));
+
             updateView();
         }
         else if (source == viewFrame.UNOButton) {
