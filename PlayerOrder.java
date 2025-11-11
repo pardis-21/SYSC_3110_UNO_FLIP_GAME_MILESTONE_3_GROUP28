@@ -11,7 +11,7 @@ public class PlayerOrder {
 
     private playerNode firstPlayer; //head
     private playerNode lastPlayer; //tail
-    private int numPlayers; //num of nodes
+    public int numPlayers; //num of nodes
     private playerNode currentPlayer;
     //creating a node
 

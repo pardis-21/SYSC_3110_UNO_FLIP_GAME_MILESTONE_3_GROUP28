@@ -85,11 +85,6 @@ public class Game {
             GameLogicModel model = new GameLogicModel();
             model.initializePlayers();
 
-            PlayerOrder order = new PlayerOrder();
-            order.addPlayer(new Player("Player 1"));
-            order.addPlayer(new Player("Player 2"));
-            model.setPlayerOrder(order);
-
             UnoViewFrame view = new UnoViewFrame(model);
 
             UnoController controller = new UnoController(model);

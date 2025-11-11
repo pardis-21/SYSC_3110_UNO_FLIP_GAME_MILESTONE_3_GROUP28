@@ -175,152 +175,57 @@ public class GameLogicModel {
      * - Checking for round completion
      */
 
-    public void playGame() {
-        Scanner userInput = new Scanner(System.in);
+    public void playGame(Card card) {
 
-        System.out.println("These are your cards: ");
-        boolean flag = true;
-        while (flag) {
-            System.out.println(playerOrder.getCurrentPlayer().showHand());
-            System.out.println(playerOrder.getCurrentPlayer().getName()  + ": What is the index of the card you would like to play? (Or enter 0 to draw a card) ");
-
-
-            try {
-               int choice = userInput.nextInt();
-
-                //if the player wants to draw a card
-                if (choice == 0) {
-                    playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
-                    System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn a card");
-
-                    drawPile.remove(0);
-                    playerTurn();
-                    flag = false;
-                }
-                //check if input is valid but not 0
-                else if (choice > 0 && choice <= playerOrder.getCurrentPlayer().getHand().size()) {
-                    Card card = playerOrder.getCurrentPlayer().getHand().get(choice - 1);
-
-                    if (card.playCardOnAnother(getTopCard())) {
-                        if (card.getCardType().equals(Card.Type.REVERSE)) {
-                            direction = !direction;
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
-                            System.out.println("Order of game has been reversed\n");
-
-                        }
-                        else if (card.getCardType().equals(Card.Type.SKIP)) {
-
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
-
-                            //if direction is CW
-                            if (direction) {
-                                playerOrder.nextPlayerClockwise();
-                                System.out.println( playerOrder.getCurrentPlayer().getName() + "'s turn has been skipped\n");
-
-                            }
-                            //if direction is CCW
-                            else {
-                                playerOrder.nextPlayerCounterClockwise();
-                                System.out.println( playerOrder.getCurrentPlayer().getName() + "'s turn has been skipped\n");
-                            }
-
-                        }
-                        else if (card.getCardType() == Card.Type.WILD) {
-                            System.out.println("WILD card played. Enter the colour (RED, GREEN, BLUE, YELLOW):");
-
-                            // If you previously used nextInt()/next() elsewhere, clear the leftover newline once:
-                            if (userInput.hasNextLine()) userInput.nextLine();
-
-                            flag = true;
-                            while (flag) {
-                                String colour = userInput.nextLine().trim().toUpperCase();
-
-                                if (!colour.equals("RED") && !colour.equals("GREEN") &&
-                                        !colour.equals("BLUE") && !colour.equals("YELLOW")) {
-                                    System.out.println("Invalid colour. Please try again (RED, GREEN, BLUE, YELLOW):");
-                                } else {
-                                    card.setCardColour(colour); // if this expects String
-                                    flag = false;
-                                    playerOrder.getCurrentPlayer().getHand().remove(card);
-
-                                }
-                            }
-                        }
-                        else if (card.getCardType().equals(Card.Type.WILD_DRAW2)) {
-                            System.out.println("WIlD DRAW2 card has been played. Enter the colour that will be played next: (RED, GREEN, BLUE, YELLOW)");
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
-
-                            if (userInput.hasNextLine()) userInput.nextLine();
-
-                            flag = true;
-                            while (flag) {
-                                String colour = userInput.nextLine().trim().toUpperCase();
-
-                                if (!colour.equals("RED") && !colour.equals("GREEN") &&
-                                        !colour.equals("BLUE") && !colour.equals("YELLOW")) {
-                                    System.out.println("Invalid colour. Please try again (RED, GREEN, BLUE, YELLOW):");
-                                } else {
-                                    card.setCardColour(colour); // if setCardColour takes String
-                                    flag = false;
-                                }
-                            }
-
-
-                            playerTurn();
-                            playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
-                            drawPile.remove(0);
-                            playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
-                            drawPile.remove(0);
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn 2 cards.");
-
-
-
-                        }
-
-                        else if (card.getCardType().equals(Card.Type.DRAW_ONE)) {
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has played the following card: " + card.getCardColour() + " " + card.getCardType());
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
-
-                            playerTurn();
-                            playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
-                            System.out.println(playerOrder.getCurrentPlayer().getName() + " has drawn a card.");
-                            drawPile.remove(0);
-
-
-                        }
-                        else{
-                            System.out.println( playerOrder.getCurrentPlayer().getName() + " has played the following card: " +  card.getCardColour() + " " + card.getCardType());
-                            playerOrder.getCurrentPlayer().getHand().remove(card);
-                        }
-
-                        discardPile.add(0, card);
-
-                        if(playerOrder.getCurrentPlayer().getHand().isEmpty()){
-                            awardRoundPointsTo(playerOrder.getCurrentPlayer());
-                            return;
-                        }
-
-                        playerTurn();
-                        flag = false;
-
-                    }
-                    else {
-                        System.out.println("!!!Card cannot be played. Choose another or enter 0 to draw a card!!! ");
-                        System.out.println();
-                    }
-                } else {
-                    System.out.println("Invalid input. Try again");
-                }
+        if (card.getCardType().equals(Card.Type.REVERSE)) {
+            direction = !direction;
+            playerOrder.getCurrentPlayer().getHand().remove(card);
+            playerTurn();
+            if(playerOrder.numPlayers == 2){
+                playerTurn();
             }
-            catch(InputMismatchException e){
-                System.out.println("Invalid input. Try again");
-                userInput.nextLine();
-            }
+
+        } else if (card.getCardType().equals(Card.Type.SKIP)) {
+            playerOrder.getCurrentPlayer().getHand().remove(card);
+            playerTurn(); // skip this player
+            JOptionPane.showMessageDialog(null, playerOrder.getCurrentPlayer().getName() + "has been skipped!");
+
+            playerTurn();
+
+        } else if (card.getCardType().equals(Card.Type.WILD_DRAW2)) {
+            playerOrder.getCurrentPlayer().getHand().remove(card);
+            playerTurn();
+            playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
+            drawPile.remove(0);
+            playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
+            drawPile.remove(0);
+
+
+        } else if (card.getCardType().equals(Card.Type.DRAW_ONE)) {
+            playerOrder.getCurrentPlayer().getHand().remove(card);
+
+            playerTurn();
+            playerOrder.getCurrentPlayer().getHand().add(drawPile.get(0));
+            drawPile.remove(0);
+
+            playerTurn();
+
+        } else {
+            playerOrder.getCurrentPlayer().getHand().remove(card);
         }
 
+        discardPile.add(0, card);
+
+        if (playerOrder.getCurrentPlayer().getHand().isEmpty()) {
+            awardRoundPointsTo(playerOrder.getCurrentPlayer());
+            return;
+        }
     }
+
+
+
+
+
 
     /**
      * Awards points to the player who wins a round, based on other players' remaining cards.
@@ -454,7 +359,6 @@ public class GameLogicModel {
         while(!roundEnded){
             confirmPlayerAtScreen();
             System.out.println("Top card: " + getTopCard() + "\n");
-            playGame(); // this will set roundEnded = true when someone goes out
         }
     }
 

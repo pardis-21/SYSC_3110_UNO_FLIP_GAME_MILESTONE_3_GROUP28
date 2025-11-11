@@ -32,6 +32,11 @@ public class UnoController implements ActionListener {
 
 
     public void onCardClicked(Card heldCard) {
+        if (model.isTurnCompleted()) {
+            JOptionPane.showMessageDialog(null, "Your turn is complete! Click on the next player button.");
+            return;
+        }
+
         Card top = model.getTopCard();
         boolean success = model.tryPlayCard(heldCard);
 
@@ -43,6 +48,8 @@ public class UnoController implements ActionListener {
         }
 
         updateView();
+        model.setTurnCompleted(true);
+
     }
 
     public void onDrawClicked(){
@@ -60,8 +67,14 @@ public class UnoController implements ActionListener {
             source = (JButton)source;
         }
         if (source == viewFrame.drawPile) {
+            if (model.isTurnCompleted()) {
+                JOptionPane.showMessageDialog(null, "Your turn is complete! Click on the next player button.");
+                return;
+            }
             model.drawCardCurrentPlayer();
             updateView();
+            model.setTurnCompleted(true);
+
         }
         else if (source == viewFrame.discardPile){
             JOptionPane.showMessageDialog(viewFrame,"Top card: " + model.getTopCard());
@@ -92,7 +105,9 @@ public class UnoController implements ActionListener {
             //List<Card> hand = model.getPlayerHand();
             viewFrame.updateHand(model.getPlayerHand());
             viewFrame.updateTopCard(model.getTopCard());
+            viewFrame.currentPlayerName.setText(model.getCurrentPlayer().getName());
         }
+
 
     }
 

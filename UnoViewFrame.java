@@ -20,7 +20,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
     private final GameLogicModel model;
     private UnoController controller;
 
-    private JTextArea currentPlayerName;
+    public JTextArea currentPlayerName;
 
 
     //PLAYER CARDS IN HAND AS BUTTONS
@@ -39,6 +39,10 @@ public class UnoViewFrame extends JFrame implements UnoView {
         controller = new UnoController(model);
         this.playerCardButtons = new ArrayList<>();
         playerNames = new ArrayList<>();
+
+        currentPlayerName = new JTextArea("");
+        currentPlayerName.setEditable(false);
+
 
         //FRAME PROPERTIES
         getContentPane().setBackground(new Color(30, 120,60));
@@ -70,7 +74,6 @@ public class UnoViewFrame extends JFrame implements UnoView {
         scoreLabel.setForeground(Color.BLACK);
         scorePanel.setBackground(new Color(30, 120,60));
         scorePanel.add(scoreLabel);
-
         //DECK PANEL
         decksPanel.add(drawPile);
 
@@ -98,6 +101,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
         add(decksPanel, BorderLayout.CENTER);
         add(cardPanel, BorderLayout.SOUTH);
         add(scorePanel, BorderLayout.NORTH);
+        add(currentPlayerName, BorderLayout.EAST);
         add(nextPlayerButton, BorderLayout.WEST);
 
 
@@ -157,7 +161,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
             );
             card.setCardColour((String) selectedOption);
         }
-
+        model.playGame(card);
 
         discardPile.setText(text);
         discardPile.setBackground(card.JavaCardColour(card.getCardColour()));
@@ -166,10 +170,6 @@ public class UnoViewFrame extends JFrame implements UnoView {
         discardPile.setContentAreaFilled(true);
     }
 
-
-    public void showWildColourSelection(){
-
-    }
 
     public void showMessage(String message){
         JOptionPane.showMessageDialog(this, message);
@@ -186,6 +186,7 @@ public class UnoViewFrame extends JFrame implements UnoView {
 
         //GET THE CURRENT PLAYER FROM THE PLAYERORDER CLASS
         Player currentPlayer = model.getCurrentPlayer();
+        currentPlayerName.setText(currentPlayer.getName());
 
         //DEBUGGING PURPOSES CAN DELETE LATER ENSURING THAT THE CORRECT PLAYER HAND IS SHOWN
         System.out.println("SHOWING CARDS FOR: " + currentPlayer.showHand());
