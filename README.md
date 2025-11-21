@@ -1,6 +1,6 @@
-----------------------------------------------------------------------------
-                                        GROUP 28
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+                                                            GROUP 28 - UNO FLIP GAME
+----------------------------------------------------------------------------------------------------------------------------------------
 
 
 SYSC 3110 Project Overview Milestone 2 UNO:
@@ -14,20 +14,21 @@ UML and Sequence Diagrams represent the system's structure and interactions betw
 Unit tests for all classes and methods in the game.
 
 Team contribution:
-Pulcherie Mbaye:
+
+```Pulcherie Mbaye:```
 Contributed to the implementation of GameLogicModel, UnoController and UnoViewFrame.
 Implemented the test cases.
 
-Anvita Ala:
+```Anvita Ala:```
 Contributed to the implementation of GameLogicModel, UnoController and UnoViewFrame.
 Created the Sequence Diagram
 Created UML class diagram
 
-Charis Nobossi:
+```Charis Nobossi:```
 Contributed to the implementation of GameLogicModel, UnoController and UnoViewFrame.
 
-Pardis Ehsani:
-Contributed to the implementation of GameLogicModel, UnoController and UnoViewFrame.
+```Pardis Ehsani:```
+Contributed to the implementation of GameLogicModel, UnoController and UnoViewFrame, PlayerCardButtons and database explanations. 
 Contributed to the UML class diagram.
 
 TO BE IMPLEMENTED
