@@ -383,25 +383,26 @@ public class GameLogicModel {
      */
     public Card handleAIPlayer(AIPlayer ai) {
 
-//        for (Card c : ai.getHand()) {
-//            c.lightMode = lightMode;   // sync card mode with global mode
-//        }
         if (getCurrentPlayer() != ai) {
             return null;
         }
-
         Card top = getTopCard();
         Card chosenCard = ai.chooseCardToPlay(top);
 
         // No playable card → draw
         if (chosenCard == null) {
-            if(!drawPile.isEmpty()){
-                ai.getHand().add(drawOneorNullCard());
+            Card drawn = drawOneorNullCard();
+            if(drawn != null) {
+                ai.getHand().add(drawn);
+                JOptionPane.showMessageDialog(null, ai.getName() + " has drawn a card!");
+
             }
-         //   drawCardCurrentPlayer();
+           //ending ai turn and going to next player
             setTurnCompleted(true);
+            playerTurn();
             return null;
         }
+
 
         // If it's a rainbow card, let AI set its colour first
         if (chosenCard.lightMode && chosenCard.getCardLightColour() == Card.LightColour.RAINBOW) {
@@ -416,11 +417,29 @@ public class GameLogicModel {
         boolean success = tryPlayCard(chosenCard);
         if(!success){
             setTurnCompleted(true);
+            //playerTurn();
             return null;
         }
 
        // tryPlayCard(chosenCard);
         setTurnCompleted(true);
+
+        if (lightMode){
+            Card.LightType lightType = chosenCard.getCardLightType();
+            if (lightType != Card.LightType.REVERSE && lightType != Card.LightType.SKIP &&
+                    lightType != Card.LightType.DRAW_ONE && lightType != Card.LightType.WILD_DRAW2 &&
+                    lightType != Card.LightType.FLIP_TO_DARK){
+                playerTurn();
+            }
+            else {
+                Card.DarkType darkType = chosenCard.getCardDarkType();
+                if (darkType != Card.DarkType.REVERSE && darkType != Card.DarkType.SKIP_ALL &&
+                        darkType != Card.DarkType.DRAW_FIVE && darkType != Card.DarkType.WILD &&
+                        darkType != Card.DarkType.WILD_DRAW_COLOUR){
+                    playerTurn();
+                }
+            }
+        }
         return chosenCard;
     }
 
@@ -621,7 +640,10 @@ public class GameLogicModel {
             return null;
         }
         else {
-            return drawPile.get(0);
+            Card drawedCard = drawPile.get(0);
+            drawPile.remove(0);
+            return drawedCard;
+
         }
     }
 

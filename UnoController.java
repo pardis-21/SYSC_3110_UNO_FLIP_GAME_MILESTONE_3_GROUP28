@@ -263,9 +263,6 @@ public class UnoController implements ActionListener {
                    viewFrame.showMessage(aiPlayer.getName() + " drew a card.");
                }
 
-               model.setTurnCompleted(true);
-               //model.playerTurn();
-                updateView();
        }
         //handleAITurnIfCurrent();
     }
