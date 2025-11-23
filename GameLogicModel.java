@@ -134,37 +134,6 @@ public class GameLogicModel {
 
     }
 
-    /**
-     * Confirms that the current player is ready to take their turn.
-     * Prompts the user to verify that the correct player is at the screen.
-     */
-    public void confirmPlayerAtScreen(){
-        Scanner userInput= new Scanner(System.in);
-
-        System.out.println("Player: " + playerOrder.getCurrentPlayer().getName() + "'s turn\n");
-        Boolean flag = true;
-        while (flag) {
-
-            System.out.println("Is player: " + playerOrder.getCurrentPlayer().getName() + " at the screen?");
-            String userChoice = userInput.nextLine();
-
-            if (userChoice.equalsIgnoreCase("yes") || userChoice.equalsIgnoreCase("y")) {
-                //playerTurn();
-                flag = false;
-            }
-            else if (userChoice.equalsIgnoreCase("no") || userChoice.equalsIgnoreCase("n")) {
-                System.out.println("Pass the computer");
-                //playerTurn();
-
-
-            }
-            else {
-                System.out.println("Enter Yes or No");
-            }
-
-
-        }
-    }
 
     /**
      * Handles the gameplay for a single player's turn, including:
@@ -392,7 +361,7 @@ public class GameLogicModel {
                 }
             }
             if (!exists) {
-                String isAI = JOptionPane.showInputDialog(null, "is" + playerName + "an AI? (yes/no)");
+                String isAI = JOptionPane.showInputDialog(null, "is " + playerName + " an AI? (yes/no)");
                 boolean ai = isAI !=null && isAI.equalsIgnoreCase("yes");
                 Player player;
                 if (ai) {
@@ -412,29 +381,36 @@ public class GameLogicModel {
      * handles an ai players turn
      */
 
-    public void handleAIPlayer(AIPlayer ai){
+    public Card handleAIPlayer(AIPlayer ai) {
+
+        if (getCurrentPlayer() != ai) {
+            return null;
+        }
+
         Card top = getTopCard();
         Card chosenCard = ai.chooseCardToPlay(top);
 
-        if(chosenCard == null){
-            if(!drawPile.isEmpty()){
-                ai.getHand().add(drawPile.remove(0));
-            }
-            setTurnCompleted(true);
-            return;
+        // No playable card → draw
+        if (chosenCard == null) {
+            drawCardCurrentPlayer();
+            return null;
         }
 
-        ai.getHand().remove(chosenCard);
-        discardPile.add(0, chosenCard);
-
-        applyCardEffect(chosenCard);
-        if(ai.getHand().isEmpty()){
-            awardRoundPointsTo(ai);
+        // If it's a rainbow card, let AI set its colour first
+        if (chosenCard.lightMode && chosenCard.getCardLightColour() == Card.LightColour.RAINBOW) {
+            Card.LightColour chosenColour = ai.chooseBestLightColour();
+            chosenCard.setCardLightColour(chosenColour.name());
+        } else if (!chosenCard.lightMode && chosenCard.getCardDarkColour() == Card.DarkColour.RAINBOW) {
+            Card.DarkColour chosenColour = ai.chooseBestDarkColour();
+            chosenCard.setCardDarkColour(chosenColour.name());
         }
-        setTurnCompleted(true);
 
-
+        tryPlayCard(chosenCard);
+        return chosenCard;
     }
+
+
+
 
 
     public void drawCardCurrentPlayer() {

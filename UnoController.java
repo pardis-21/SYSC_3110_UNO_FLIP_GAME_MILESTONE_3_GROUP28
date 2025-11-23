@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+
 /**
  * This class acts as the bridge between the GameLogicModel and the view.
  * It handles user interactions such as playing cards, drawing cards,
@@ -45,7 +46,22 @@ public class UnoController implements ActionListener {
         viewFrame.nextPlayerButton.addActionListener(this);
         viewFrame.UNOButton.addActionListener(this);
         model.startGame();
-        updateView();    }
+        updateView();
+        //checks for ai player
+        Player current = model.getCurrentPlayer();
+        if (current instanceof AIPlayer) {
+            Card played = model.handleAIPlayer((AIPlayer) current);
+            updateView();
+
+            if (played != null) {
+                viewFrame.showMessage(current.getName() + " played " + played);
+            } else {
+                viewFrame.showMessage(current.getName() + " drew a card.");
+            }
+
+
+        }
+    }
 
 
     /**
@@ -160,26 +176,45 @@ public class UnoController implements ActionListener {
 
         }
         else if (source == viewFrame.nextPlayerButton) { // making sure player actually plays b4 going to next player
-            if(model.getTopCard().getCardDarkType().equals(Card.DarkType.WILD_DRAW_COLOUR) && !model.isTurnCompleted() && !model.lightMode){
-                viewFrame.showMessage("You have to draw cards until you get a " + model.getTopCard().getCardDarkColour() + " card!");
+            if (model.getTopCard().getCardDarkType().equals(Card.DarkType.WILD_DRAW_COLOUR)
+                    && !model.isTurnCompleted() && !model.lightMode) {
+                viewFrame.showMessage("You have to draw cards until you get a "
+                        + model.getTopCard().getCardDarkColour() + " card!");
                 return;
             }
             else if (!model.isTurnCompleted()) {
                 viewFrame.showMessage("You must play or draw before ending your turn!");
                 return;
             }
+
             if (model.getCurrentPlayer().getHand().size() == 1 && !model.getCurrentPlayer().UNOClicked) {
-                JOptionPane.showMessageDialog(null, "You had 'uno' card and didn't click UNO before ending your turn! draw 2 :P");
+                JOptionPane.showMessageDialog(null,
+                        "You had 'uno' card and didn't click UNO before ending your turn! draw 2 :P");
                 onDrawClicked();
                 onDrawClicked();
             }
 
+            // End current player's turn, move to next player
             model.setTurnCompleted(false);
             model.playerTurn();
             viewFrame.scoreLabel.setText("Score: " + model.scores.get(model.getCurrentPlayer()));
-
             updateView();
+
+            //checks if its an AI here so it can play accordingly
+            Player current = model.getCurrentPlayer();
+            if (current instanceof AIPlayer) {
+                Card played = model.handleAIPlayer((AIPlayer) current);
+                updateView();
+
+                if (played != null) {
+                    viewFrame.showMessage(current.getName() + " played " + played);
+                } else {
+                    viewFrame.showMessage(current.getName() + " drew a card.");
+                }
+
+            }
         }
+
         else if (source == viewFrame.UNOButton) {
             if (!(model.getCurrentPlayer().getHand().size() == 1)) {
                 JOptionPane.showMessageDialog(null, "Uh oh! You don't have 'uno' card! draw 2 :P");
