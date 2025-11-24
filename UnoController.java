@@ -14,11 +14,10 @@ import java.util.List;
  * @Author Pulcherie Mbaye 101302394
  *
  */
-public class UnoController implements ActionListener {
 
+public class UnoController implements ActionListener {
     private UnoViewFrame viewFrame;
     private final GameLogicModel model;
-
 
     /**
      * Constructs a new controller with the given model
@@ -31,8 +30,7 @@ public class UnoController implements ActionListener {
     }
 
     /**
-     * sets the iew for this controller and connexts event listeners to the appropriate button
-     *
+     * Sets the iew for this controller and connexts event listeners to the appropriate button
      * @param viewFrame represents the GUI
      */
 
@@ -44,7 +42,6 @@ public class UnoController implements ActionListener {
         viewFrame.discardPile.addActionListener(this);
         viewFrame.nextPlayerButton.addActionListener(this);
         viewFrame.UNOButton.addActionListener(this);
-
         model.startGame();
         updateView();
         handleAITurnIfCurrent();
@@ -76,10 +73,9 @@ public class UnoController implements ActionListener {
             );
             return;
         }
-
         updateView();
         model.setTurnCompleted(true);
-
+        //getting the top card from the model
         Card updated = model.getTopCard();
         Card.LightType lightType = updated.getCardLightType();
         Card.DarkType darkType = updated.getCardDarkType();
@@ -207,7 +203,6 @@ public class UnoController implements ActionListener {
             handleAITurnIfCurrent();
         }
 
-
         else if (source == viewFrame.UNOButton) {
             if (!(model.getCurrentPlayer().getHand().size() == 1)) {
                 JOptionPane.showMessageDialog(null, "Uh oh! You don't have 'uno' card! draw 2 :P");
@@ -219,7 +214,6 @@ public class UnoController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "UNOOOOO!!!");
                 model.getCurrentPlayer().UNOClicked = true;
             }
-
         }
     }
 
@@ -237,11 +231,8 @@ public class UnoController implements ActionListener {
                     (model.lightMode && model.getTopCard().getCardDarkType().equals(Card.DarkType.FLIP_TO_LIGHT))) {
                 //viewFrame.updateAllPlayerHands(model.getPlayerOrder());
             }
-
         }
-
     }
-
 
     /**
      * returns the current player's hand
@@ -273,20 +264,14 @@ public class UnoController implements ActionListener {
                if (played != null) {
                    viewFrame.showMessage(aiPlayer.getName() + " played " + played);
                    //model.setTurnCompleted(false);
-
                 }
                //otherwise ai picked up a card cuz they couldnt play anything
                else {
                    viewFrame.showMessage(aiPlayer.getName() + " drew a card.");
-
-                   //model.setTurnCompleted(true);
-                   //model.playerTurn();
                }
                model.setTurnCompleted(false);
                updateView();
-
        }
-        //handleAITurnIfCurrent();
     }
 
 }

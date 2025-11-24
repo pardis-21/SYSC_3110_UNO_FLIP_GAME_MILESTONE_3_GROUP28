@@ -23,20 +23,14 @@ public class UnoViewFrame extends JFrame {
     public JPanel scorePanel; // panel for the player's score
     public JLabel scoreLabel;
     public JButton nextPlayerButton;
-
-    private static final int NUMBER_OF_CARDS_BEGGING_GAME = 7;
     private ArrayList<Player> playerNames;
     private final GameLogicModel model;
     private UnoController controller;
-
     public JTextArea currentPlayerName;
-
-
     //PLAYER CARDS IN HAND AS BUTTONS
     private ArrayList<JButton> playerCardButtons;
     //private JButton playerCard;
     private static final int SEVEN = 7;
-
     private JPanel decksPanel; // panel for the discard pile, new card pile, and "UNO!" button
     public JButton discardPile;
     public JButton UNOButton;
@@ -56,7 +50,6 @@ public class UnoViewFrame extends JFrame {
 
         currentPlayerName = new JTextArea("");
         currentPlayerName.setEditable(false);
-
 
         //FRAME PROPERTIES
         getContentPane().setBackground(new Color(30, 120,60));
@@ -280,19 +273,6 @@ public class UnoViewFrame extends JFrame {
         for (Card card: hand){
             PlayerCardButton playerCardButtons = new PlayerCardButton(card);
             playerCardButtons.addActionListner(controller);
-            /*
-            for (int i = 0; i < SEVEN; i++) {
-                PlayerCardButton playerButton = new PlayerCardButton(card);
-                playerCardButtons[i] = playerButton;
-                playerButton.addActionListener(controller);
-                playerButton.setFocusable(true);
-                playerCardButtons[i].setFocusable(false);
-                cardPanel.add(playerButton);
-            }
-
-
-             */
-
         }
         cardPanel.revalidate();
         cardPanel.repaint();
