@@ -108,20 +108,18 @@ public class UnoViewFrame extends JFrame {
         decksPanel.add(drawPile);
         decksPanel.add(discardPile);
         decksPanel.add(UNOButton);
-
-
-        add(decksPanel, BorderLayout.CENTER);
-        add(cardPanel, BorderLayout.SOUTH);
-        add(scorePanel, BorderLayout.NORTH);
-        add(currentPlayerName, BorderLayout.EAST);
-        add(nextPlayerButton, BorderLayout.WEST);
+        // ADDING THE LAYOUT TO THE JFRAME
+        this.add(decksPanel, BorderLayout.CENTER);
+        this.add(cardPanel, BorderLayout.SOUTH);
+        this.add(scorePanel, BorderLayout.NORTH);
+        this.add(currentPlayerName, BorderLayout.EAST);
+        this.add(nextPlayerButton, BorderLayout.WEST);
 
 
         // WHEN LAYER PRESSESS NEWCARD BUTTON, ONE RANDOM CARD IS ADDED TO THEIR HAND
         // WHEN PLAYER HAND == 1, UNO BUTTON SHOWS AND THEY HAVE TO CLICK IT, IF NOT THEY GET 2 RANDOM CARDS ADDED
         // IF PLAYER ONE PLAYS, POP UP SAY PLAYER 2? PRESS OK,PLAYER 2 CAN PLAY
         // WHEN INSIDE PLAYER 2, SHOWS PLAYER 2 HAND
-
 
         cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         setVisible(true);
@@ -168,13 +166,11 @@ public class UnoViewFrame extends JFrame {
             cardPanel.repaint();
         }
     }
-
     //public void updateAllPlayerHands(PlayerOrder order){
       //  for (Player player: order.getAllPlayersToArrayList()){
         //    updateHand(player.getHand());
         //}
     //}
-
 
     /**
      * updates the top card displayed on the discard pile.
@@ -183,9 +179,7 @@ public class UnoViewFrame extends JFrame {
      */
     public void updateTopCard(Card card) {
         if (card == null) return;
-//        if (card.getCardLightType().equals(Card.LightType.FLIP_TO_DARK) || card.getCardDarkType().equals(Card.DarkType.FLIP_TO_LIGHT)){
-//            model.lightMode = !model.lightMode;
-//        }
+        //light mode card
         if (model.lightMode) {
             String text = card.getCardLightColour() + " " + card.getCardLightType();  // e.g. RED THREE
 
@@ -227,8 +221,7 @@ public class UnoViewFrame extends JFrame {
                 card.setCardDarkColour((String) selectedOption);
 
             }
-            //model.playGame(card);
-
+            //showing what the discard pile looks like
             discardPile.setText(text);
             discardPile.setBackground(card.JavaCardDarkColour(card.getCardDarkColour()));
             discardPile.setForeground(Color.BLACK);
@@ -236,7 +229,6 @@ public class UnoViewFrame extends JFrame {
             discardPile.setContentAreaFilled(true);
         }
     }
-
 
     /**
      * displays a popup message dialog with teh given message text
@@ -287,7 +279,6 @@ public class UnoViewFrame extends JFrame {
     private void update(){
         model.playerTurn();
         startGamePlayerButtons();
-
     }
 
     /**
@@ -297,7 +288,5 @@ public class UnoViewFrame extends JFrame {
     public void setController(UnoController controller) {
         this.controller = controller;
     }
-
-
 
 }
