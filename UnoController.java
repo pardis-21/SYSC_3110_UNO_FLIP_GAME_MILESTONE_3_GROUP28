@@ -175,6 +175,9 @@ public class UnoController implements ActionListener {
         else if (source == viewFrame.nextPlayerButton) {
             model.setTurnCompleted(true);
             model.playerTurn();
+            model.setTurnCompleted(false);
+            updateView();
+            handleAITurnIfCurrent();
             // making sure player actually plays b4 going to next player
             if (model.getTopCard().getCardDarkType().equals(Card.DarkType.WILD_DRAW_COLOUR)
                     && !model.isTurnCompleted() && !model.lightMode) {
