@@ -1,19 +1,24 @@
 import java.util.ArrayList;
 
-
+/**
+ * This class makes a AIPlayer that extends the Player class.
+ * It contains the implementation of the AIPlayer and its logic on its decision for choosing cards.
+ *
+ * @Author Anvita Ala 101301514
+ * @Author Charis Nobossi 101297742
+ * @Author Pulcherie Mbaye 101302394
+ * @Author Pardis Ehsani 101300400
+ */
 public class AIPlayer extends Player {
-
     public AIPlayer(String name){
         super(name);
     }
     // choosing the first valid card
-
     /**
-     *
+     *The AIPlayer chooses which card to play from the discard pile (top card)
      * @param topCard top of discard pile
      * @return the chosen card to put down
      */
-
     public Card chooseCardToPlay(Card topCard){
         for (Card c: getHand()) {
             if (c.playCardOnAnother(topCard)) {
@@ -23,6 +28,10 @@ public class AIPlayer extends Player {
         return null;
     }
 
+    /**
+     * The AIPlayer chooses the best colour from the light cards to play
+     * @return the best light colour card based on whats in the AIPlayers hand
+     */
     // these two functions below will help our ai choose which colour to set to when it get's a wild card
     public Card.LightColour chooseBestLightColour() {
         // Count colours in hand (ignore RAINBOW)
@@ -39,7 +48,6 @@ public class AIPlayer extends Player {
                 default -> {} // RAINBOW: ignore
             }
         }
-
         // Pick the max; default to RED if all are 0
         Card.LightColour best = Card.LightColour.RED;
         int max = red;
@@ -51,6 +59,10 @@ public class AIPlayer extends Player {
         return best;
     }
 
+    /**
+     * AIPlayer chooses the best colour to play based on the Dark deck.
+     * @return the colour of the darkmode card deck
+     */
     public Card.DarkColour chooseBestDarkColour() {
         int orange = 0, teal = 0, pink = 0, purple = 0;
 
@@ -65,18 +77,13 @@ public class AIPlayer extends Player {
                 default -> {} // RAINBOW: ignore
             }
         }
-
         Card.DarkColour best = Card.DarkColour.ORANGE;
         int max = orange;
-
+        //chooses the best colour to place down
         if (teal   > max) { max = teal;   best = Card.DarkColour.TEAL; }
         if (pink   > max) { max = pink;   best = Card.DarkColour.PINK; }
         if (purple > max) { max = purple; best = Card.DarkColour.PURPLE; }
-
         return best;
     }
-
-
-
 
 }

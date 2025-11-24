@@ -26,7 +26,6 @@ public class AIPlayerTest {
 
         playerOrder.addPlayer(aiPlayer);
         playerOrder.addPlayer(human);
-        gameLogicModel.initializePlayers();
         gameLogicModel.setPlayerOrder(playerOrder);
         gameLogicModel.initScores();
 

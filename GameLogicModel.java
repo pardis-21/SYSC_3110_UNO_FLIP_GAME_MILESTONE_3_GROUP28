@@ -17,7 +17,6 @@ public class GameLogicModel {
     public final ArrayList<Card> discardPile;
     public final ArrayList<Card> drawPile;
     private boolean roundEnded = false;
-    //private ArrayList<Card> flipPile; for future use
     private boolean direction; //clockwise or counterclockwise
     public final Map<Player, Integer> scores = new HashMap<>();
     private static final int SEVEN = 7;
