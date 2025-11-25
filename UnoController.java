@@ -62,7 +62,6 @@ public class UnoController implements ActionListener {
 
         if (model.isTurnCompleted()) {
             JOptionPane.showMessageDialog(null, "Your turn is complete! Click on the next player button.");
-            model.setTurnCompleted(false);
             return;
         }
 
@@ -75,21 +74,6 @@ public class UnoController implements ActionListener {
         }
         updateView();
         model.setTurnCompleted(true);
-        //getting the top card from the model
-        Card updated = model.getTopCard();
-        Card.LightType lightType = updated.getCardLightType();
-        Card.DarkType darkType = updated.getCardDarkType();
-
-        if (model.lightMode) {
-            if (lightType == Card.LightType.REVERSE || lightType == Card.LightType.SKIP || lightType == Card.LightType.DRAW_ONE || lightType == Card.LightType.WILD_DRAW2) {
-                model.setTurnCompleted(false);
-            }
-        }
-        else{
-            if(darkType == Card.DarkType.REVERSE || darkType == Card.DarkType.SKIP_ALL || darkType == Card.DarkType.DRAW_FIVE){
-                model.setTurnCompleted(false);
-            }
-        }
 
         if(model.getCurrentPlayer().getHand().isEmpty()){
             int points = model.awardRoundPointsTo(model.getCurrentPlayer());
@@ -117,6 +101,7 @@ public class UnoController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "New round started!");
             }
         }
+        handleAITurnIfCurrent();
     }
 
     /**
@@ -169,11 +154,11 @@ public class UnoController implements ActionListener {
 
         }
         else if (source == viewFrame.nextPlayerButton) {
-            //model.setTurnCompleted(true);
-            //model.playerTurn();
-            //model.setTurnCompleted(false);
-            //updateView();
-            //handleAITurnIfCurrent();
+
+            if (model.getCurrentPlayer() instanceof AIPlayer) {
+                handleAITurnIfCurrent();
+                return;
+            }
             // making sure player actually plays b4 going to next player
             if (model.getTopCard().getCardDarkType().equals(Card.DarkType.WILD_DRAW_COLOUR)
                     && !model.isTurnCompleted() && !model.lightMode) {

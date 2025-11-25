@@ -405,8 +405,7 @@ public class GameLogicModel {
 
         if (getCurrentPlayer() != ai) {
             return null;
-        }
-        else {
+        } else {
             Card top = getTopCard();
             Card chosenCard = ai.chooseCardToPlay(top);
 
@@ -418,7 +417,6 @@ public class GameLogicModel {
                 if (drawn != null) {
                     //adds the drawed card into its hand
                     ai.getHand().add(drawn);
-                    JOptionPane.showMessageDialog(null, ai.getName() + " has drawn a card!");
                 }
                 setTurnCompleted(true);
                 playerTurn();
@@ -440,39 +438,51 @@ public class GameLogicModel {
 
             boolean success = tryPlayCard(chosenCard);
             if (!success) {
-                //setTurnCompleted(false);
+                // optional: draw a card instead of silently skipping
+                Card drawn = drawOneorNullCard();
+                if (drawn != null) {
+                    ai.getHand().add(drawn);
+                    JOptionPane.showMessageDialog(null, ai.getName() + " had no valid moves and drew a card!");
+                }
+                setTurnCompleted(true);
                 playerTurn();
+                setTurnCompleted(false);
                 return null;
             }
-            JOptionPane.showMessageDialog(null,
-                    ai.getName() + " played " + chosenCard.toString());
 
-            // tryPlayCard(chosenCard);
-            setTurnCompleted(true);
-            playerTurn();
-            setTurnCompleted(false);
+            JOptionPane.showMessageDialog(null, ai.getName() + " played " + chosenCard.toString());
 
+// Now decide if we need to move the turn further or not:
             if (lightMode) {
-                Card.LightType lightType = chosenCard.getCardLightType();
-                if (lightType != Card.LightType.REVERSE && lightType != Card.LightType.SKIP &&
-                        lightType != Card.LightType.DRAW_ONE && lightType != Card.LightType.WILD_DRAW2 &&
-                        lightType != Card.LightType.FLIP_TO_DARK) {
-                    //playerTurn();
-                } else {
-                    Card.DarkType darkType = chosenCard.getCardDarkType();
-                    if (darkType != Card.DarkType.REVERSE && darkType != Card.DarkType.SKIP_ALL &&
-                            darkType != Card.DarkType.DRAW_FIVE && darkType != Card.DarkType.WILD &&
-                            darkType != Card.DarkType.WILD_DRAW_COLOUR) {
-                        //playerTurn();
+                switch (chosenCard.getCardLightType()) {
+                    case REVERSE, SKIP, DRAW_ONE, WILD_DRAW2, FLIP_TO_DARK -> {
+                        // turn already advanced appropriately in applyCardEffect
+                    }
+                    default -> {
+                        // Simple card: just go to next player
+                        playerTurn();
+                    }
+                }
+            } else {
+                switch (chosenCard.getCardDarkType()) {
+                    case REVERSE, DRAW_FIVE, WILD_DRAW_COLOUR, FLIP_TO_LIGHT -> {
+                        // already handled by applyCardEffect
+                    }
+                    case SKIP_ALL -> {
+                        // AI gets to play again: do nothing, keep current player as AI
+                    }
+                    default -> {
+                        playerTurn();
                     }
                 }
             }
 
+            setTurnCompleted(false);
             return chosenCard;
         }
     }
 
-    public void drawCardCurrentPlayer() {
+            public void drawCardCurrentPlayer() {
        if(!drawPile.isEmpty()){
            getCurrentPlayer().getHand().add(drawPile.get(0));
            drawPile.remove(0);
@@ -488,22 +498,35 @@ public class GameLogicModel {
      */
     public boolean tryPlayCard(Card card) {
         Card top = getTopCard();
+
         // 1. Check play validity
         if (!card.playCardOnAnother(top)) return false;
 
+        // Remember who is playing this card
+        Player originalPlayer = getCurrentPlayer();
+
         // 2. Remove from hand + place on discard
-        getCurrentPlayer().getHand().remove(card);
+        originalPlayer.getHand().remove(card);
         discardPile.add(0, card);
 
-        // 3. Apply special effects IMMEDIATELY (only once!)
+        // 3. Apply special effects (may advance to another player)
         applyCardEffect(card);
 
-        // 4. If they emptied their hand, end the round
-        if (getCurrentPlayer().getHand().isEmpty()) {
-            awardRoundPointsTo(getCurrentPlayer());
+        // 4. If the original player emptied their hand, end the round
+        if (originalPlayer.getHand().isEmpty()) {
+            awardRoundPointsTo(originalPlayer);
         }
 
-        setTurnCompleted(true);
+        // 5. Set turnCompleted based on whose turn it is now
+        if (getCurrentPlayer() == originalPlayer) {
+            // They played a normal card and it's still their turn (i.e., waiting for "Next Player")
+            setTurnCompleted(true);
+        } else {
+            // A special card (SKIP, DRAW, REVERSE, FLIP, etc.) advanced the turn.
+            // The new current player is just starting their turn.
+            setTurnCompleted(false);
+        }
+
         return true;
     }
 
@@ -526,16 +549,24 @@ public class GameLogicModel {
                     //setTurnCompleted(false);
                     break;
 
-                case SKIP:
-                  //  playerOrder.getCurrentPlayer().getHand().remove(card);
+                case SKIP: {
+                    // Move once to the player who is going to be skipped
+                    playerTurn();
+                    Player skippedPlayer = getCurrentPlayer();
 
-                    //advance once more to skip the next player
-                    //setTurnCompleted(true);
-                    playerTurn(); // skip this player
-                    JOptionPane.showMessageDialog(null, playerOrder.getCurrentPlayer().getName() + " has been skipped!");
+                    // Move again so that we completely skip their turn
+                    playerTurn();
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            skippedPlayer.getName() + " has been skipped!"
+                    );
+
+                    // New current player is about to start a fresh turn
                     setTurnCompleted(false);
-                    //playerTurn();
                     break;
+                }
+
 
                 case DRAW_ONE:
                    // playerOrder.getCurrentPlayer().getHand().remove(card);
