@@ -710,6 +710,23 @@ public class GameLogicModel {
     }
 
     /**
+     * Reseting the cards (such as discard and draw piles) for a new round
+     * but also perserving the scores that are currently totalled
+     */
+    public void resetAllCardsForNewRound(){
+
+    }
+
+    /**
+     * Reseting the cards (such as discard and draw piles) for a new Game
+     * but also resetting all the scores to 0
+     */
+    public void resetAllCardsForNewGame(){
+        //reset the scores and also call reset a new round
+    }
+
+
+    /**
      * used to return the order of the players
      * @return the order of the players
      */

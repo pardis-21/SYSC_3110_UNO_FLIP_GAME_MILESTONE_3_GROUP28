@@ -23,7 +23,7 @@ public class UnoViewFrame extends JFrame {
     public JPanel scorePanel; // panel for the player's score
     public JLabel scoreLabel;
     public JButton nextPlayerButton;
-    private ArrayList<Player> playerNames;
+    //private ArrayList<Player> playerNames;
     private final GameLogicModel model;
     private UnoController controller;
     public JTextArea currentPlayerName;
@@ -46,7 +46,7 @@ public class UnoViewFrame extends JFrame {
         this.model = model;
         //controller = new UnoController(model);
         this.playerCardButtons = new ArrayList<>();
-        playerNames = new ArrayList<>();
+        //playerNames = new ArrayList<>();
 
         currentPlayerName = new JTextArea("");
         currentPlayerName.setEditable(false);
