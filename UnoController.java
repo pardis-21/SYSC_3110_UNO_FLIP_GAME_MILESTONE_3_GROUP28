@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 public class UnoController implements ActionListener {
     private UnoViewFrame viewFrame;
     private final GameLogicModel model;
+    private Label roundLabel;
+    private int roundNumber;
 
     /**
      * Constructs a new controller with the given model
@@ -25,8 +28,8 @@ public class UnoController implements ActionListener {
      * @param model contains the game logic
      */
     public UnoController(GameLogicModel model) {
-
         this.model = model;
+        this.roundNumber = 0;
     }
 
     /**
@@ -40,6 +43,9 @@ public class UnoController implements ActionListener {
         viewFrame.discardPile.addActionListener(this);
         viewFrame.nextPlayerButton.addActionListener(this);
         viewFrame.UNOButton.addActionListener(this);
+        //undo/redo buttons that i might have to change just wait
+        viewFrame.undoButton.addActionListener(this);
+        viewFrame.redoButton.addActionListener(this);
         model.startGame();
         updateView();
         handleAITurnIfCurrent();
@@ -89,14 +95,16 @@ public class UnoController implements ActionListener {
                         options[0] // Default selected option
                 );
             if(((String)selectedOption).equals(options[1])){
-                JOptionPane.showMessageDialog(null, "Thanks for playing!");
+                JOptionPane.showMessageDialog(null, "Thanks for playing! \nExiting...");
                 System.exit(0);
             }
             else{
                 model.startGame();
                 model.setTurnCompleted(false);
                 updateView();
+                roundNumber++;
                 JOptionPane.showMessageDialog(null, "New round started!");
+
             }
         }
         handleAITurnIfCurrent();
@@ -131,10 +139,8 @@ public class UnoController implements ActionListener {
             if (model.getCurrentPlayer() instanceof AIPlayer) {
                 JOptionPane.showMessageDialog(null, "It's an AI player's turn. Click Next Player to continue.");
                 return;
-            }
-
-            else if(model.getTopCard().getCardDarkType().equals(Card.DarkType.WILD_DRAW_COLOUR) && !model.lightMode){
-                if(!model.drawPile.getFirst().getCardDarkColour().equals(model.getTopCard().getCardDarkColour())){
+            } else if (model.getTopCard().getCardDarkType().equals(Card.DarkType.WILD_DRAW_COLOUR) && !model.lightMode) {
+                if (!model.drawPile.getFirst().getCardDarkColour().equals(model.getTopCard().getCardDarkColour())) {
                     onDrawClicked();
                     return;
                 }
@@ -146,12 +152,10 @@ public class UnoController implements ActionListener {
             onDrawClicked();
             model.setTurnCompleted(true);
 
-        }
-        else if (source == viewFrame.discardPile){
-            JOptionPane.showMessageDialog(viewFrame,"Top card: " + model.getTopCard());
+        } else if (source == viewFrame.discardPile) {
+            JOptionPane.showMessageDialog(viewFrame, "Top card: " + model.getTopCard());
 
-        }
-        else if (source == viewFrame.nextPlayerButton) {
+        } else if (source == viewFrame.nextPlayerButton) {
 
             if (model.getCurrentPlayer() instanceof AIPlayer) {
                 handleAITurnIfCurrent();
@@ -163,8 +167,7 @@ public class UnoController implements ActionListener {
                 viewFrame.showMessage("You have to draw cards until you get a "
                         + model.getTopCard().getCardDarkColour() + " card!");
                 return;
-            }
-            else if (!model.isTurnCompleted()) {
+            } else if (!model.isTurnCompleted()) {
                 viewFrame.showMessage("You must play or draw before ending your turn!");
                 return;
             }
@@ -183,19 +186,31 @@ public class UnoController implements ActionListener {
 
             // If the new current player is AI, let it play right away
             handleAITurnIfCurrent();
-        }
-
-        else if (source == viewFrame.UNOButton) {
+        } else if (source == viewFrame.UNOButton) {
             if (!(model.getCurrentPlayer().getHand().size() == 1)) {
                 JOptionPane.showMessageDialog(null, "Uh oh! You don't have 'uno' card! draw 2 :P");
                 onDrawClicked();
                 onDrawClicked();
                 model.setTurnCompleted(false);
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "UNOOOOO!!!");
                 model.getCurrentPlayer().UNOClicked = true;
             }
+        } else if (source == viewFrame.undoButton) {
+            /* TESTING SOMETHING OUT
+            if (model.undo()){
+                updateView();
+
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "You nothing to undo!");
+            }
+        }
+        else if (source == viewFrame.redoButton) {
+            model.redo();
+        }
+             */
+            model.undo();
         }
     }
 
@@ -206,11 +221,13 @@ public class UnoController implements ActionListener {
         if (viewFrame != null) {
             viewFrame.updateHand(model.getPlayerHand());
             viewFrame.updateTopCard(model.getTopCard());
+            roundLabel.setText("Round: " + roundNumber);
             viewFrame.currentPlayerName.setText(model.getCurrentPlayer().getName());
             if ((!model.lightMode && model.getTopCard().getCardLightType().equals(Card.LightType.FLIP_TO_DARK)) ||
                     (model.lightMode && model.getTopCard().getCardDarkType().equals(Card.DarkType.FLIP_TO_LIGHT))) {
             }
         }
+
     }
 
     /**

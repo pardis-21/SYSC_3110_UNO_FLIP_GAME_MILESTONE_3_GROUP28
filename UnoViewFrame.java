@@ -18,7 +18,6 @@ import java.util.List;
 
 public class UnoViewFrame extends JFrame {
 
-
     private JPanel cardPanel; // panel for current player's cards
     public JPanel scorePanel; // panel for the player's score
     public JLabel scoreLabel;
@@ -35,6 +34,10 @@ public class UnoViewFrame extends JFrame {
     public JButton discardPile;
     public JButton UNOButton;
     public JButton drawPile;
+    public JButton undoButton;
+    public JButton redoButton;
+    private JLabel roundLabel;
+    public int roundNumber;
 
 
     /**
@@ -50,6 +53,7 @@ public class UnoViewFrame extends JFrame {
 
         currentPlayerName = new JTextArea("");
         currentPlayerName.setEditable(false);
+
 
         //FRAME PROPERTIES
         getContentPane().setBackground(new Color(30, 120,60));
@@ -123,6 +127,25 @@ public class UnoViewFrame extends JFrame {
 
         cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         setVisible(true);
+
+
+        //SHOWCASING THE UNDO AND THE REDO BUTTONS
+        undoButton = new JButton("UNDO");
+        redoButton = new JButton("REDO");
+        undoButton.setPreferredSize(new Dimension(150, 150));
+        redoButton.setPreferredSize(new Dimension(150, 150));
+        undoButton.setFont(new Font("Arial", Font.BOLD, 18));
+        redoButton.setFont(new Font("Arial", Font.BOLD, 18));
+        undoButton.setBackground(Color.WHITE);
+        redoButton.setBackground(Color.WHITE);
+
+        //ADDING A ROUND LABEL AT THE TOP TO INDICATE WHICH ROUND WERE AT
+        JLabel roundLabel = new JLabel("Round: 1");
+        roundLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        roundLabel.setForeground(Color.BLACK);
+        roundLabel.setBackground(Color.WHITE);
+        roundNumber = 1;
+
 
     }
 

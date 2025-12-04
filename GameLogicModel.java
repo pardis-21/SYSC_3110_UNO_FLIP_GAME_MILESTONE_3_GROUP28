@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.util.*;
 
@@ -765,5 +766,45 @@ public class GameLogicModel {
     }
 
 
+    public void undo() {
+        UNOCommandManager commandManager = new UNOCommandManager();
+        commandManager.undo();
+    }
 
+    public void redo() {
+        UNOCommandManager commandManager = new UNOCommandManager();
+         commandManager.redo();
+    }
+
+
+    //RESETTING THE GAME AND STUFF
+
+    public void resetRound(){
+        drawPile.clear();
+        discardPile.clear();
+        for (Player player : playerOrder.getAllPlayersToArrayList()) {
+            player.clearHand();
+        }
+        dealCardsBeginning();
+        initializePlayers();
+        startGame();
+        lightMode = true;
+        //forceLightMode(true);
+    }
+
+    public void resetGame(){
+        for (Player player : playerOrder.getAllPlayersToArrayList()) {
+            player.clearHand();
+            //resetting the scores for all the players in the game
+            initScores();
+        }
+        resetAllCardsForNewRound();
+        resetAllCardsForNewGame();
+        resetRound();
+    }
+
+//    public String getCurrentRoundNumber() {
+//        //UnoViewFrame view = new UnoViewFrame()
+//
+//    }
 }

@@ -108,6 +108,10 @@ public class Player {
         return false;
     }
 
+    public void clearHand(){
+        hand.clear();
+    }
+
 
 
 }
