@@ -42,8 +42,11 @@ public class UnoViewFrame extends JFrame {
     public JButton discardPile;
     public JButton UNOButton;
     public JButton drawPile;
+    //undo button
     public JButton undoButton;
+    //redo button
     public JButton redoButton;
+    //label for the round at the top of the screen
     public JLabel roundLabel;
     public int roundNumber;
 
@@ -65,7 +68,7 @@ public class UnoViewFrame extends JFrame {
 
         //FRAME PROPERTIES
         getContentPane().setBackground(new Color(30, 120,60));
-        setTitle("UNO FLIP - MILESTONE 2");
+        setTitle("UNO FLIP - MILESTONE 4");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -173,6 +176,10 @@ public class UnoViewFrame extends JFrame {
         redoButton.setVisible(true);
         undoButton.setBackground(Color.WHITE);
         redoButton.setBackground(Color.WHITE);
+
+        //ADDING UNDO AND REDO BUTTONS TO THE FRAME
+        this.add(undoButton, BorderLayout.EAST);
+        this.add(redoButton, BorderLayout.WEST);
 
 
 

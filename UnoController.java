@@ -29,7 +29,7 @@ public class UnoController implements ActionListener {
      */
     public UnoController(GameLogicModel model) {
         this.model = model;
-        this.roundNumber = 0;
+        this.roundNumber = 1;
     }
 
     /**
