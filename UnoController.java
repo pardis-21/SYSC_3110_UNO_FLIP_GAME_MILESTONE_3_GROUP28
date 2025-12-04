@@ -19,7 +19,7 @@ import java.util.List;
 public class UnoController implements ActionListener {
     private UnoViewFrame viewFrame;
     private final GameLogicModel model;
-    private Label roundLabel;
+    private JLabel roundLabel;
     private int roundNumber;
 
     /**
@@ -221,7 +221,7 @@ public class UnoController implements ActionListener {
         if (viewFrame != null) {
             viewFrame.updateHand(model.getPlayerHand());
             viewFrame.updateTopCard(model.getTopCard());
-            roundLabel.setText("Round: " + roundNumber);
+            viewFrame.roundLabel.setText("Round number: " + roundNumber);
             viewFrame.currentPlayerName.setText(model.getCurrentPlayer().getName());
             if ((!model.lightMode && model.getTopCard().getCardLightType().equals(Card.LightType.FLIP_TO_DARK)) ||
                     (model.lightMode && model.getTopCard().getCardDarkType().equals(Card.DarkType.FLIP_TO_LIGHT))) {
