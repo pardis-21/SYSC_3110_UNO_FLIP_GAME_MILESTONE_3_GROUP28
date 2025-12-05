@@ -152,7 +152,6 @@ public class UnoViewFrame extends JFrame {
         // ADDING THE LAYOUT TO THE JFRAME
         this.add(decksPanel, BorderLayout.CENTER);
         this.add(cardPanel, BorderLayout.SOUTH);
-        this.add(currentPlayerName, BorderLayout.EAST);
         this.add(nextPlayerButton, BorderLayout.WEST);
         this.add(topPanel, BorderLayout.NORTH);
 
@@ -170,8 +169,8 @@ public class UnoViewFrame extends JFrame {
         //SHOWCASING THE UNDO AND THE REDO BUTTONS
         undoButton = new JButton("UNDO");
         redoButton = new JButton("REDO");
-        undoButton.setPreferredSize(new Dimension(150, 150));
-        redoButton.setPreferredSize(new Dimension(150, 150));
+        undoButton.setPreferredSize(new Dimension(100, 100));
+        redoButton.setPreferredSize(new Dimension(100, 100));
         undoButton.setFont(new Font("Arial", Font.BOLD, 18));
         redoButton.setFont(new Font("Arial", Font.BOLD, 18));
         undoButton.setVisible(true);
@@ -180,18 +179,21 @@ public class UnoViewFrame extends JFrame {
         redoButton.setBackground(Color.WHITE);
 
         //ADDING UNDO AND REDO BUTTONS TO THE FRAME
-        JPanel undoredoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-        undoredoPanel.setOpaque(false);
+        undoredoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        //undoredoPanel.setOpaque(false);
 
         undoredoPanel.add(undoButton);
         undoredoPanel.add(redoButton);
 
 
-        //topPanel.add(undoredoPanel, BorderLayout.EAST);
-
-        this.add(undoredoPanel, BorderLayout.NORTH);
+        //topPanel.add(undoredoPanel, BorderLayout.NORTH);
 
 
+        topPanel.add(undoredoPanel, BorderLayout.EAST);
+        topPanel.add(currentPlayerName, BorderLayout.SOUTH);
+        //  this.add(currentPlayerName, BorderLayout.EAST);
+
+        this.add(undoredoPanel, BorderLayout.EAST);
 
 
 
