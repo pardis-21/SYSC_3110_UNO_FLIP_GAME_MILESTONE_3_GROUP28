@@ -29,7 +29,7 @@ How it works:
 
 Contributions:
 
-```Pardis Ehsani```: Added AudioPlayer Class, implemented methods in the Game Logic Class and have the adio played in the Controller class
+```Pardis Ehsani```: Added AudioPlayer Class, implemented methods in the Game Logic Class and have the audio played in the Controller class, found  the sounds and converted them into wav from mp3
 - BUZZER SOUND
 - VICTORY ROUND PLAYER SOUND
 - AI SOUND
