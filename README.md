@@ -18,7 +18,7 @@ This is the double-sided version of UNO (Light side → Dark side) with all the 
    java -cp out Game
    ```
 
-## SYSC 3110 Milestone 5 - BONUS FEATURES: SOUND EFFECTS + BACKGROUND MUSIC
+## SYSC 3110 Milestone 5 - BONUS FEATURES: SOUND EFFECTS + BACKGROUND MUSIC + IMAGES
 
 **FEATURE 7- Student-Designed Features**
 
