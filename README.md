@@ -19,6 +19,7 @@ This is the double-sided version of UNO (Light side → Dark side) with all the 
    ```
 
 ## Milestone 5 - BONUS FEATURES: SOUND EFFECTS + BACKGROUND MUSIC
+FEATURE 5
 
 Sound effects were added for playing the game (different effects for different scenarios: wrong card/uno card/flip/wrong move etc and Coconut Mall as background music that loops the entire game :) )
 
