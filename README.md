@@ -20,32 +20,19 @@ This is the double-sided version of UNO (Light side → Dark side) with all the 
 
 ## SYSC 3110 Milestone 5 - BONUS FEATURES: SOUND EFFECTS + BACKGROUND MUSIC
 
-**FEATURE 1 – Images**
-Custom images were added throughout the game to enhance the visual experience and make the interface feel more fun + interactive. A full background image was implemented for the main game window, along with custom image buttons for the DRAW and UNO actions. 
-
-How it works:
-A custom BackgroundPanel class renders the background image behind all UI components
-The DRAW and UNO buttons were replaced with custom JPG icons and scaled to fit the game layout
-
-Contributions:
-
-```Charis Nobossi```:  Added the BackgroundPanel class, implemented the background image, added custom images for the DRAW and UNO buttons, and applied semi-transparent UI styling for enhanced visuals
-BACKGROUND IMAGE
-DRAW BUTTON IMAGE
-UNO BUTTON IMAGE
-TRANSPARENT / SEMI-TRANSPARENT BUTTON UI
-Images can be found in the root of the project.
-
-
 **FEATURE 7- Student-Designed Features**
 
 Sound effects were added for playing the game (different effects for different scenarios: wrong card/uno card/flip/wrong move etc and Coconut Mall as background music that loops the entire game :) )
+
+Custom images were also added throughout the game to enhance the visual experience and make the interface feel more fun + interactive. A full background image was implemented for the main game window, along with custom image buttons for the DRAW and UNO actions. 
 
 ALL COPYRIGHT SOUNDS TO THEIR RESPECTFUL OWNERS
 
 How it works:
 - When a Card is clicked, a sound plays
 - Background music starts when the view is loaded (GUI is loaded) to loop forever
+- A custom BackgroundPanel class renders the background image behind all UI components
+- The DRAW and UNO buttons were replaced with custom JPG icons and scaled to fit the game layout
 
 Contributions:
 
@@ -57,7 +44,14 @@ Contributions:
 - UNO WRONG SOUND
 - BACKGROUND MUSIC SOUND
 
-Sounds can be found in the root of the project
+```Charis Nobossi```:  Added the BackgroundPanel class, implemented the background image, added custom images for the DRAW and UNO buttons, and applied semi-transparent UI styling for enhanced visuals
+BACKGROUND IMAGE
+DRAW BUTTON IMAGE
+UNO BUTTON IMAGE
+TRANSPARENT / SEMI-TRANSPARENT BUTTON UI
+
+Images can be found in the root of the project.
+Sounds can be found in the root of the project.
 
 ## SYSC 3110 Project Overview Milestone 4 UNO: 
 
