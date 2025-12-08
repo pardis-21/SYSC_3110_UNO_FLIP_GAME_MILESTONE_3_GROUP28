@@ -15,8 +15,6 @@ import java.util.List;
 public class Card implements Serializable {
     private static final Random random = new Random();
 
-
-
     //_____________________LIGHT SIDE CARD_________________________
     /**
      * Represents the different types of cards that can exist in the game.
@@ -100,8 +98,6 @@ public class Card implements Serializable {
         }
 
     }
-
-
 
     private LightType cardLightType;
     private DarkType cardDarkType;

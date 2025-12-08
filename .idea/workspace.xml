@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="413c9b79-5a63-4534-99a5-f5076c31e798" name="Changes" comment="added another sound" />
+    <list default="true" id="413c9b79-5a63-4534-99a5-f5076c31e798" name="Changes" comment="added another sound">
+      <change beforePath="$PROJECT_DIR$/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buzzer_sound.mp3" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,7 +117,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765153639734</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added another sound">
+      <option name="closed" value="true" />
+      <created>1765154670684</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1765154670684</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
